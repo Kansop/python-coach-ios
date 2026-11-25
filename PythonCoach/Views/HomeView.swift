@@ -1,0 +1,218 @@
+import SwiftUI
+
+struct HomeView: View {
+    @EnvironmentObject private var store: ProgressStore
+    @EnvironmentObject private var engine: PythonEngine
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var appeared = false
+
+    private var calendar: Calendar { .current }
+    private var streakState: StreakState {
+        StreakState(current: store.snapshot.streak, longest: store.snapshot.longestStreak, lastActiveDay: store.snapshot.lastActiveDay)
+    }
+    private var shownStreak: Int {
+        StreakLogic.displayStreak(state: streakState, now: Date(), calendar: calendar)
+    }
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    header
+                    if engine.phase == .failed {
+                        engineBanner
+                    }
+                    HStack(spacing: 12) {
+                        streakCard
+                        xpCard
+                    }
+                    if let nextID = store.nextLessonID(), let lesson = Curriculum.lesson(id: nextID) {
+                        continueCard(lesson)
+                    } else if store.snapshot.completedCount >= Curriculum.orderedIDs.count {
+                        finishedCard
+                    }
+                    Text("Units")
+                        .font(AppTheme.rounded(.title3, weight: .bold))
+                        .foregroundStyle(AppTheme.ink)
+                    ForEach(Array(Curriculum.units.enumerated()), id: \.element.id) { index, unit in
+                        NavigationLink(value: unit) {
+                            unitRow(unit)
+                        }
+                        .buttonStyle(PressScaleButtonStyle())
+                        .opacity(appeared ? 1 : 0)
+                        .offset(y: appeared || reduceMotion ? 0 : 14)
+                        .animation(AppMotion.spring(reduceMotion).delay(Double(index) * 0.04), value: appeared)
+                    }
+                }
+                .padding(20)
+            }
+            .background(AppTheme.paper)
+            .navigationTitle("Python Coach")
+            .navigationDestination(for: Unit.self) { unit in
+                UnitDetailView(unit: unit)
+            }
+            .navigationDestination(for: String.self) { id in
+                LessonFlowView(lessonID: id)
+            }
+            .onAppear { appeared = true }
+        }
+    }
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Learn by typing real code")
+                .font(AppTheme.rounded(.subheadline, weight: .semibold))
+                .foregroundStyle(AppTheme.accent)
+            Text(StreakLogic.message(state: streakState, now: Date(), calendar: calendar))
+                .font(AppTheme.rounded(.body))
+                .foregroundStyle(AppTheme.muted)
+        }
+    }
+
+    private var engineBanner: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label(engine.failureMessage, systemImage: "exclamationmark.triangle.fill")
+                .font(AppTheme.rounded(.headline, weight: .semibold))
+                .foregroundStyle(AppTheme.danger)
+            if !engine.failureDetail.isEmpty {
+                Text(engine.failureDetail)
+                    .font(AppTheme.rounded(.footnote))
+                    .foregroundStyle(AppTheme.muted)
+                    .lineLimit(4)
+            }
+            Button("Start Python again") { engine.restart() }
+                .font(AppTheme.rounded(.subheadline, weight: .semibold))
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .coachCard()
+    }
+
+    private var streakCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            streakIcon
+                .accessibilityLabel(shownStreak == 1 ? "1 day streak" : "\(shownStreak) day streak")
+            Text("\(shownStreak)")
+                .font(AppTheme.rounded(.largeTitle, weight: .bold))
+                .foregroundStyle(AppTheme.ink)
+                .contentTransition(.numericText())
+                .animation(AppMotion.spring(reduceMotion), value: shownStreak)
+            Text(shownStreak == 1 ? "day" : "days")
+                .font(AppTheme.rounded(.caption, weight: .semibold))
+                .foregroundStyle(AppTheme.muted)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .coachCard()
+    }
+
+    @ViewBuilder
+    private var streakIcon: some View {
+        if shownStreak > 0 {
+            Image(systemName: "flame.fill")
+                .font(.system(size: 28))
+                .foregroundStyle(AppTheme.flameGradient)
+                .symbolEffect(.pulse, options: .repeating, isActive: !reduceMotion)
+                .symbolEffect(.bounce, value: shownStreak)
+        } else {
+            Image(systemName: "flame")
+                .font(.system(size: 28))
+                .foregroundStyle(AppTheme.muted)
+        }
+    }
+
+    private var xpCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Image(systemName: "star.fill")
+                .font(.system(size: 24))
+                .foregroundStyle(AppTheme.accent)
+            Text("Level \(LevelLogic.level(for: store.snapshot.xp))")
+                .font(AppTheme.rounded(.headline, weight: .bold))
+                .foregroundStyle(AppTheme.ink)
+            Text(LevelLogic.title(for: store.snapshot.xp))
+                .font(AppTheme.rounded(.caption, weight: .semibold))
+                .foregroundStyle(AppTheme.muted)
+                .lineLimit(1)
+            XPBar(fraction: LevelLogic.fraction(for: store.snapshot.xp))
+            Text("\(store.snapshot.xp) XP")
+                .font(AppTheme.rounded(.caption, weight: .semibold))
+                .foregroundStyle(AppTheme.muted)
+                .contentTransition(.numericText())
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .coachCard()
+    }
+
+    private func continueCard(_ lesson: Lesson) -> some View {
+        NavigationLink(value: lesson.id) {
+            HStack(spacing: 12) {
+                Image(systemName: "play.fill")
+                    .font(.headline)
+                    .foregroundStyle(AppTheme.onAccent)
+                    .frame(width: 44, height: 44)
+                    .background(AppTheme.accent)
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Continue")
+                        .font(AppTheme.rounded(.caption, weight: .semibold))
+                        .foregroundStyle(AppTheme.muted)
+                    Text(lesson.title)
+                        .font(AppTheme.rounded(.headline, weight: .bold))
+                        .foregroundStyle(AppTheme.ink)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(AppTheme.muted)
+            }
+            .padding(16)
+            .coachCard()
+        }
+        .buttonStyle(PressScaleButtonStyle())
+    }
+
+    private var finishedCard: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "trophy.fill")
+                .font(.title2)
+                .foregroundStyle(AppTheme.flameStart)
+            Text("You finished the path. Replay any lesson to keep the streak going.")
+                .font(AppTheme.rounded(.subheadline))
+                .foregroundStyle(AppTheme.ink)
+        }
+        .padding(16)
+        .coachCard()
+    }
+
+    private func unitRow(_ unit: Unit) -> some View {
+        let done = store.completedCount(in: unit)
+        let total = unit.lessons.count
+        let fraction = total == 0 ? 0 : Double(done) / Double(total)
+        return HStack(spacing: 14) {
+            Image(systemName: unit.symbol)
+                .font(.title3)
+                .foregroundStyle(AppTheme.accent)
+                .frame(width: 44, height: 44)
+                .background(AppTheme.accent.opacity(0.12))
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            VStack(alignment: .leading, spacing: 6) {
+                Text(unit.title)
+                    .font(AppTheme.rounded(.headline, weight: .bold))
+                    .foregroundStyle(AppTheme.ink)
+                Text(unit.summary)
+                    .font(AppTheme.rounded(.caption))
+                    .foregroundStyle(AppTheme.muted)
+                XPBar(fraction: fraction)
+            }
+            Text("\(done)/\(total)")
+                .font(AppTheme.rounded(.subheadline, weight: .bold))
+                .foregroundStyle(AppTheme.muted)
+                .monospacedDigit()
+            Image(systemName: "chevron.right")
+                .font(.footnote.weight(.semibold))
+                .foregroundStyle(AppTheme.muted)
+        }
+        .padding(14)
+        .coachCard()
+    }
+}
