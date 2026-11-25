@@ -9,7 +9,7 @@ enum UserSettings {
 
     static func registerDefaults() {
         UserDefaults.standard.register(defaults: [
-            sound: true,
+            sound: false,
             haptics: true,
             appearance: "system",
             welcome: false

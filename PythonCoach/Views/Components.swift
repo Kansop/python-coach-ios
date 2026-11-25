@@ -136,37 +136,35 @@ struct ConsoleBlock: View {
 struct FeedbackCard: View {
     var check: LessonCheck
 
+    private var tone: Color {
+        check.passed ? AppTheme.success : AppTheme.flameStart
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Label(check.headline, systemImage: check.passed ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+            Label(check.headline, systemImage: check.passed ? "checkmark.circle.fill" : (check.error == nil ? "arrow.triangle.2.circlepath" : "lightbulb.fill"))
                 .font(AppTheme.rounded(.headline, weight: .semibold))
-                .foregroundStyle(check.passed ? AppTheme.success : AppTheme.danger)
-            Text(check.message)
-                .font(AppTheme.rounded(.body))
-                .foregroundStyle(AppTheme.ink)
-                .fixedSize(horizontal: false, vertical: true)
+                .foregroundStyle(tone)
+            if let error = check.error {
+                ErrorHelpView(error: error)
+            } else {
+                Text(check.message)
+                    .font(AppTheme.rounded(.body))
+                    .foregroundStyle(AppTheme.ink)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             if let expected = check.expected {
                 compareBlock(title: "Expected", text: expected.isEmpty ? "(nothing)" : expected)
             }
             if let actual = check.actual {
                 compareBlock(title: "Your program", text: actual.isEmpty ? "(nothing)" : actual)
             }
-            if let error = check.error, !error.detail.isEmpty {
-                DisclosureGroup("Technical details") {
-                    Text(error.detail)
-                        .font(.system(size: 13, design: .monospaced))
-                        .foregroundStyle(AppTheme.muted)
-                        .textSelection(.enabled)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .font(AppTheme.rounded(.subheadline, weight: .semibold))
-                .foregroundStyle(AppTheme.muted)
-            }
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background((check.passed ? AppTheme.success : AppTheme.danger).opacity(0.12))
+        .background(tone.opacity(0.12))
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .accessibilityElement(children: .contain)
     }
 
     private func compareBlock(title: String, text: String) -> some View {
@@ -211,5 +209,69 @@ struct InputPromptSheet: View {
         .presentationDetents([.height(280)])
         .presentationDragIndicator(.visible)
         .onAppear { focused = true }
+    }
+}
+
+/// The kid-friendly error explainer: what happened, where, and one thing to try.
+struct ErrorHelpView: View {
+    var error: ErrorExplanation
+    var showTitle = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if showTitle {
+                Label(error.title, systemImage: "lightbulb.fill")
+                    .font(AppTheme.rounded(.headline, weight: .semibold))
+                    .foregroundStyle(AppTheme.flameStart)
+            }
+            Text(FriendlyErrors.encouragement)
+                .font(AppTheme.rounded(.caption, weight: .semibold))
+                .foregroundStyle(AppTheme.muted)
+            if let line = error.line {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Line \(line)")
+                        .font(AppTheme.rounded(.caption, weight: .bold))
+                        .foregroundStyle(AppTheme.flameStart)
+                    if let text = error.lineText {
+                        Text(text)
+                            .font(.system(size: 15, design: .monospaced))
+                            .foregroundStyle(AppTheme.ink)
+                            .textSelection(.enabled)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+                .padding(10)
+                .background(AppTheme.card)
+                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(error.lineText.map { "Line \(line): \($0)" } ?? "Line \(line)")
+            }
+            Text(error.message)
+                .font(AppTheme.rounded(.body))
+                .foregroundStyle(AppTheme.ink)
+                .fixedSize(horizontal: false, vertical: true)
+            if !error.tip.isEmpty {
+                Label {
+                    Text("Try this: \(error.tip)")
+                        .font(AppTheme.rounded(.subheadline, weight: .semibold))
+                        .foregroundStyle(AppTheme.ink)
+                        .fixedSize(horizontal: false, vertical: true)
+                } icon: {
+                    Image(systemName: "wrench.and.screwdriver.fill")
+                        .foregroundStyle(AppTheme.accent)
+                }
+            }
+            if !error.detail.isEmpty {
+                DisclosureGroup("What Python said") {
+                    Text(error.detail)
+                        .font(.system(size: 13, design: .monospaced))
+                        .foregroundStyle(AppTheme.muted)
+                        .textSelection(.enabled)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .font(AppTheme.rounded(.subheadline, weight: .semibold))
+                .foregroundStyle(AppTheme.muted)
+            }
+        }
     }
 }

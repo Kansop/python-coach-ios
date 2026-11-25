@@ -8,6 +8,7 @@ struct PlaygroundView: View {
     @State private var title = ""
     @State private var output = ""
     @State private var errorText = ""
+    @State private var lastError: ErrorExplanation?
     @State private var isRunning = false
 
     var body: some View {
@@ -49,6 +50,13 @@ struct PlaygroundView: View {
                         sections: [OutputSection(index: 0, title: "Output", stdout: output, stderr: "")],
                         emptyText: errorText.isEmpty ? "Run your snippet to see the output." : errorText
                     )
+                    if let lastError {
+                        ErrorHelpView(error: lastError, showTitle: true)
+                            .padding(14)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(AppTheme.flameStart.opacity(0.12))
+                            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    }
                     if !library.snippets.isEmpty {
                         Text("Saved snippets")
                             .font(AppTheme.rounded(.headline, weight: .bold))
@@ -97,6 +105,7 @@ struct PlaygroundView: View {
         guard !isRunning else { return }
         isRunning = true
         errorText = ""
+        lastError = nil
         let source = code
         Task {
             let result = await engine.run(code: source, stdin: [], append: "", names: [], interactive: true)
@@ -106,9 +115,11 @@ struct PlaygroundView: View {
                     type: result.errorType,
                     message: result.errorMessage,
                     traceback: result.traceback,
-                    timedOut: result.timedOut
+                    timedOut: result.timedOut,
+                    source: source
                 )
-                errorText = explanation.message
+                errorText = "Python stopped early. Read the note below."
+                lastError = explanation
             } else if result.cancelled {
                 errorText = "You closed the question."
             }

@@ -10,6 +10,11 @@ struct UnitDetailView: View {
                 Text(unit.summary)
                     .font(AppTheme.rounded(.body))
                     .foregroundStyle(AppTheme.muted)
+                if unit.optional {
+                    Label("Bonus unit. These are extra ideas for when you feel ready. You don't need them for the main path.", systemImage: "sparkles")
+                        .font(AppTheme.rounded(.subheadline))
+                        .foregroundStyle(AppTheme.accent)
+                }
                 ForEach(unit.lessons) { lesson in
                     if store.isUnlocked(lesson.id) {
                         NavigationLink(value: lesson.id) {
@@ -31,6 +36,19 @@ struct UnitDetailView: View {
         .navigationBarTitleDisplayMode(.large)
     }
 
+    private func rowDetail(_ lesson: Lesson) -> String {
+        let count = lesson.practices.count
+        let what: String
+        if lesson.isProject {
+            what = "Project, \(count) steps"
+        } else if lesson.isCheckpoint {
+            what = "Checkpoint, \(count) questions"
+        } else {
+            what = count == 1 ? "1 practice" : "\(count) practices"
+        }
+        return "\(what) · \(lesson.xp) XP"
+    }
+
     private func lessonRow(_ lesson: Lesson) -> some View {
         let done = store.snapshot.lessons[lesson.id]?.completed == true
         let unlocked = store.isUnlocked(lesson.id)
@@ -43,7 +61,7 @@ struct UnitDetailView: View {
                 Text(lesson.title)
                     .font(AppTheme.rounded(.body, weight: .semibold))
                     .foregroundStyle(AppTheme.ink)
-                Text("\(lesson.xp) XP")
+                Text(rowDetail(lesson))
                     .font(AppTheme.rounded(.caption))
                     .foregroundStyle(AppTheme.muted)
             }

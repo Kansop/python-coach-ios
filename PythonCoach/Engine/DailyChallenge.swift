@@ -8,27 +8,24 @@ struct DailyPick: Equatable, Identifiable {
     var tests: [LessonTest]
     var xp: Int
 
-    func asLesson() -> Lesson {
-        Lesson(
+    func asPractice() -> Practice {
+        Practice(
             id: id,
-            title: title,
-            explanation: "Today's challenge. Finish it once to keep your streak and earn bonus XP.",
-            exampleCode: starter,
-            exampleNote: "",
-            exercise: prompt,
+            kind: "code",
+            prompt: prompt,
             starterCode: starter,
+            showCode: "",
             hints: [
                 "Read the prompt again and match the output exactly.",
                 "Run it, then change the part that does not match."
             ],
             sourceMustContain: [],
             sourceMustContainOneOf: [],
-            xp: xp,
-            kind: "code",
-            quizChoices: [],
-            quizAnswer: -1,
-            quizExplain: "",
-            tests: tests
+            tests: tests,
+            choices: [],
+            answer: -1,
+            explain: "",
+            carryCode: false
         )
     }
 }

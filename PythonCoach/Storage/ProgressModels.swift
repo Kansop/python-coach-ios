@@ -6,6 +6,14 @@ struct LessonSnapshot: Equatable {
     var code: String
 }
 
+struct PracticeSnapshot: Equatable {
+    var passed: Bool
+    var hintsUnlocked: Int
+    var code: String
+    var misses: Int
+    var lastPracticed: Date?
+}
+
 struct ProgressSnapshot: Equatable {
     var xp: Int
     var streak: Int
@@ -13,6 +21,8 @@ struct ProgressSnapshot: Equatable {
     var lastActiveDay: Date?
     var hintsUsed: Int
     var lessons: [String: LessonSnapshot]
+    /// Keyed by practice key, for example "print-hello/p1".
+    var practices: [String: PracticeSnapshot] = [:]
 
     static let empty = ProgressSnapshot(
         xp: 0,
@@ -20,7 +30,8 @@ struct ProgressSnapshot: Equatable {
         longestStreak: 0,
         lastActiveDay: nil,
         hintsUsed: 0,
-        lessons: [:]
+        lessons: [:],
+        practices: [:]
     )
 
     var completedIDs: Set<String> {
@@ -29,6 +40,10 @@ struct ProgressSnapshot: Equatable {
 
     var completedCount: Int {
         completedIDs.count
+    }
+
+    func passedPractices(in lesson: Lesson) -> Int {
+        lesson.practices.filter { practices[lesson.practiceKey($0)]?.passed == true }.count
     }
 }
 

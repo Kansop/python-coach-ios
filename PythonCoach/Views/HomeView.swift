@@ -32,6 +32,7 @@ struct HomeView: View {
                     } else if store.snapshot.completedCount >= Curriculum.orderedIDs.count {
                         finishedCard
                     }
+                    reviewCard
                     Text("Lesson map")
                         .font(AppTheme.rounded(.title3, weight: .bold))
                         .foregroundStyle(AppTheme.ink)
@@ -65,6 +66,9 @@ struct HomeView: View {
             }
             .navigationDestination(for: DailyRoute.self) { _ in
                 DailyChallengeView()
+            }
+            .navigationDestination(for: ReviewRoute.self) { _ in
+                ReviewView()
             }
             .onAppear { appeared = true }
         }
@@ -211,6 +215,42 @@ struct HomeView: View {
         .buttonStyle(PressScaleButtonStyle())
     }
 
+    private var reviewCard: some View {
+        let candidates = ReviewPlanner.candidates(snapshot: store.snapshot, units: Curriculum.units)
+        let tricky = candidates.filter { $0.misses > 0 }.count
+        let detail: String
+        if candidates.isEmpty {
+            detail = "Finish a lesson to unlock review."
+        } else if tricky > 0 {
+            detail = tricky == 1 ? "1 tricky one to practice again" : "\(tricky) tricky ones to practice again"
+        } else {
+            detail = "Practice what you've learned so it sticks"
+        }
+        return NavigationLink(value: ReviewRoute()) {
+            HStack(spacing: 12) {
+                Image(systemName: "arrow.triangle.2.circlepath")
+                    .font(.title2)
+                    .foregroundStyle(AppTheme.accent)
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Review")
+                        .font(AppTheme.rounded(.headline, weight: .bold))
+                        .foregroundStyle(AppTheme.ink)
+                    Text(detail)
+                        .font(AppTheme.rounded(.caption, weight: .semibold))
+                        .foregroundStyle(AppTheme.muted)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(AppTheme.muted)
+            }
+            .padding(16)
+            .coachCard()
+        }
+        .buttonStyle(PressScaleButtonStyle())
+        .accessibilityLabel("Review. \(detail)")
+    }
+
     private var finishedCard: some View {
         HStack(spacing: 12) {
             Image(systemName: "trophy.fill")
@@ -236,9 +276,20 @@ struct HomeView: View {
                 .background(AppTheme.accent.opacity(0.12))
                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             VStack(alignment: .leading, spacing: 6) {
-                Text(unit.title)
-                    .font(AppTheme.rounded(.headline, weight: .bold))
-                    .foregroundStyle(AppTheme.ink)
+                HStack(spacing: 6) {
+                    Text(unit.title)
+                        .font(AppTheme.rounded(.headline, weight: .bold))
+                        .foregroundStyle(AppTheme.ink)
+                    if unit.optional {
+                        Text("Bonus")
+                            .font(AppTheme.rounded(.caption2, weight: .bold))
+                            .foregroundStyle(AppTheme.accent)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(AppTheme.accent.opacity(0.12))
+                            .clipShape(Capsule())
+                    }
+                }
                 Text(unit.summary)
                     .font(AppTheme.rounded(.caption))
                     .foregroundStyle(AppTheme.muted)

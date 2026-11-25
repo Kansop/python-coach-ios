@@ -14,15 +14,33 @@ final class ProgressStore: ObservableObject {
         self.snapshot = Self.makeSnapshot(from: profile)
     }
 
-    func code(for lesson: Lesson) -> String {
-        if let saved = snapshot.lessons[lesson.id] {
+    /// The code to show for a practice: what the learner last typed, or the starter.
+    /// Project steps that carry code start from the learner's passing code of the step before.
+    func code(for practice: Practice, in lesson: Lesson) -> String {
+        let key = lesson.practiceKey(practice)
+        if let saved = snapshot.practices[key] {
             return saved.code
         }
-        return lesson.starterCode
+        if practice.carryCode, let previous = lesson.practice(before: practice) {
+            let previousKey = lesson.practiceKey(previous)
+            if let earlier = snapshot.practices[previousKey], earlier.passed,
+               !earlier.code.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                return earlier.code
+            }
+        }
+        return practice.starterCode
     }
 
-    func hintsUnlocked(for lessonID: String) -> Int {
-        snapshot.lessons[lessonID]?.hintsUnlocked ?? 0
+    func hintsUnlocked(forKey key: String) -> Int {
+        snapshot.practices[key]?.hintsUnlocked ?? 0
+    }
+
+    func isPracticePassed(_ key: String) -> Bool {
+        snapshot.practices[key]?.passed == true
+    }
+
+    func isLessonCompleted(_ lessonID: String) -> Bool {
+        snapshot.lessons[lessonID]?.completed == true
     }
 
     func isUnlocked(_ lessonID: String) -> Bool {
@@ -47,27 +65,60 @@ final class ProgressStore: ObservableObject {
         unit.lessons.filter { snapshot.lessons[$0.id]?.completed == true }.count
     }
 
-    func saveCode(lessonID: String, code: String, starter: String) {
-        let record = record(id: lessonID, starter: starter)
+    func saveCode(key: String, code: String, starter: String) {
+        let record = record(id: key, starter: starter)
         guard record.code != code else { return }
         record.code = code
         publish()
     }
 
     @discardableResult
-    func revealNextHint(for lesson: Lesson) -> Int {
-        let record = record(id: lesson.id, starter: lesson.starterCode)
-        guard record.hintsUnlocked < lesson.hints.count else { return record.hintsUnlocked }
+    func revealNextHint(key: String, total: Int, starter: String) -> Int {
+        let record = record(id: key, starter: starter)
+        guard record.hintsUnlocked < total else { return record.hintsUnlocked }
         record.hintsUnlocked += 1
         profile.hintsUsed += 1
         publish()
         return record.hintsUnlocked
     }
 
+    /// A failed check. Review mode brings practices with misses back more often.
+    func recordMiss(key: String, starter: String) {
+        let record = record(id: key, starter: starter)
+        record.misses += 1
+        publish()
+    }
+
+    /// Marks one practice as passed. Returns true the first time.
+    @discardableResult
+    func recordPracticePass(key: String, code: String, starter: String, now: Date = Date()) -> Bool {
+        let record = record(id: key, starter: starter)
+        let first = !record.completed
+        record.completed = true
+        record.code = code
+        record.lastPracticed = now
+        publish()
+        return first
+    }
+
+    /// A review item passed. Getting it right on the first try lowers its weight.
+    func recordReviewPass(key: String, firstTry: Bool, now: Date = Date(), calendar: Calendar = .current) -> Int {
+        let record = record(id: key, starter: "")
+        if firstTry {
+            record.misses = max(0, record.misses - 1)
+        }
+        record.lastPracticed = now
+        registerStreak(now: now, calendar: calendar)
+        let gained = firstTry ? ReviewPlanner.xpPerItem : 1
+        profile.xp += gained
+        publish()
+        return gained
+    }
+
     func recordPass(lesson: Lesson, now: Date = Date(), calendar: Calendar = .current) -> CompletionResult {
         let beforeLevel = LevelLogic.level(for: snapshot.xp)
         let beforeBadges = BadgeLogic.earned(snapshot: snapshot, units: Curriculum.outlines)
-        let record = record(id: lesson.id, starter: lesson.starterCode)
+        let record = record(id: lesson.id, starter: "")
         let already = record.completed
         var gained = 0
         if !already {
@@ -154,6 +205,21 @@ final class ProgressStore: ObservableObject {
 
     private static let dailyKey = "dailyCompletedStamp"
 
+    private func registerStreak(now: Date, calendar: Calendar) {
+        let update = StreakLogic.registerActivity(
+            state: StreakState(
+                current: profile.currentStreak,
+                longest: profile.longestStreak,
+                lastActiveDay: profile.lastActiveDay
+            ),
+            now: now,
+            calendar: calendar
+        )
+        profile.currentStreak = update.state.current
+        profile.longestStreak = update.state.longest
+        profile.lastActiveDay = update.state.lastActiveDay
+    }
+
     private func record(id: String, starter: String) -> LessonProgress {
         if let existing = profile.lessons.first(where: { $0.lessonID == id }) {
             return existing
@@ -181,12 +247,23 @@ final class ProgressStore: ObservableObject {
 
     private static func makeSnapshot(from profile: LearnerProfile) -> ProgressSnapshot {
         var lessons: [String: LessonSnapshot] = [:]
+        var practices: [String: PracticeSnapshot] = [:]
         for record in profile.lessons {
-            lessons[record.lessonID] = LessonSnapshot(
-                completed: record.completed,
-                hintsUnlocked: record.hintsUnlocked,
-                code: record.code
-            )
+            if PracticeKey.isPracticeKey(record.lessonID) {
+                practices[record.lessonID] = PracticeSnapshot(
+                    passed: record.completed,
+                    hintsUnlocked: record.hintsUnlocked,
+                    code: record.code,
+                    misses: record.misses,
+                    lastPracticed: record.lastPracticed
+                )
+            } else {
+                lessons[record.lessonID] = LessonSnapshot(
+                    completed: record.completed,
+                    hintsUnlocked: record.hintsUnlocked,
+                    code: record.code
+                )
+            }
         }
         return ProgressSnapshot(
             xp: profile.xp,
@@ -194,7 +271,8 @@ final class ProgressStore: ObservableObject {
             longestStreak: profile.longestStreak,
             lastActiveDay: profile.lastActiveDay,
             hintsUsed: profile.hintsUsed,
-            lessons: lessons
+            lessons: lessons,
+            practices: practices
         )
     }
 }

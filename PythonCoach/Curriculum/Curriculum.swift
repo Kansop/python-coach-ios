@@ -5,110 +5,86 @@ struct Unit: Codable, Hashable, Identifiable {
     var title: String
     var summary: String
     var symbol: String
+    /// Bonus units sit at the end of the path. They are for later, not required.
+    var optional: Bool
     var lessons: [Lesson]
+}
+
+/// A new word the lesson introduces, with an everyday comparison.
+struct Term: Codable, Hashable {
+    var word: String
+    var meaning: String
+    var like: String
+}
+
+/// One line of the worked example and what it does.
+struct WalkStep: Codable, Hashable {
+    var code: String
+    var note: String
+}
+
+/// A mistake beginners often make, why it goes wrong, and the fix.
+struct Mistake: Codable, Hashable {
+    var wrong: String
+    var why: String
+    var fix: String
 }
 
 struct Lesson: Codable, Hashable, Identifiable {
     var id: String
     var title: String
+    /// "lesson", "project", or "checkpoint".
+    var kind: String
+    var xp: Int
+    var terms: [Term]
     var explanation: String
+    var why: String
     var exampleCode: String
     var exampleNote: String
-    var exercise: String
+    var walkthrough: [WalkStep]
+    var mistakes: [Mistake]
+    var practices: [Practice]
+
+    var isProject: Bool { kind == "project" }
+    var isCheckpoint: Bool { kind == "checkpoint" }
+    var hasExample: Bool { !exampleCode.isEmpty }
+
+    func practiceKey(_ practice: Practice) -> String {
+        PracticeKey.make(lessonID: id, practiceID: practice.id)
+    }
+
+    func practice(id practiceID: String) -> Practice? {
+        practices.first { $0.id == practiceID }
+    }
+
+    func practice(before practice: Practice) -> Practice? {
+        guard let index = practices.firstIndex(where: { $0.id == practice.id }), index > 0 else { return nil }
+        return practices[index - 1]
+    }
+}
+
+/// One thing the learner does: write code, fix a bug, predict output, or answer a quick question.
+struct Practice: Codable, Hashable, Identifiable {
+    var id: String
+    /// "code", "fix", "predict", or "choice".
+    var kind: String
+    var prompt: String
     var starterCode: String
+    /// Code shown for a prediction question.
+    var showCode: String
     var hints: [String]
     var sourceMustContain: [String]
     var sourceMustContainOneOf: [String]
-    var xp: Int
-    var kind: String
-    var quizChoices: [String]
-    var quizAnswer: Int
-    var quizExplain: String
     var tests: [LessonTest]
+    var choices: [String]
+    var answer: Int
+    var explain: String
+    /// Project steps start from the learner's own code from the step before.
+    var carryCode: Bool
 
-    var isQuiz: Bool { kind == "quiz" }
+    var isChoice: Bool { kind == "predict" || kind == "choice" }
+    var isPredict: Bool { kind == "predict" }
     var isFix: Bool { kind == "fix" }
-
-    private enum CodingKeys: String, CodingKey {
-        case id, title, explanation, exampleCode, exampleNote, exercise, starterCode, hints
-        case sourceMustContain, sourceMustContainOneOf, xp, kind, quizChoices, quizAnswer, quizExplain, tests
-    }
-
-    init(
-        id: String,
-        title: String,
-        explanation: String,
-        exampleCode: String,
-        exampleNote: String,
-        exercise: String,
-        starterCode: String,
-        hints: [String],
-        sourceMustContain: [String],
-        sourceMustContainOneOf: [String],
-        xp: Int,
-        kind: String,
-        quizChoices: [String],
-        quizAnswer: Int,
-        quizExplain: String,
-        tests: [LessonTest]
-    ) {
-        self.id = id
-        self.title = title
-        self.explanation = explanation
-        self.exampleCode = exampleCode
-        self.exampleNote = exampleNote
-        self.exercise = exercise
-        self.starterCode = starterCode
-        self.hints = hints
-        self.sourceMustContain = sourceMustContain
-        self.sourceMustContainOneOf = sourceMustContainOneOf
-        self.xp = xp
-        self.kind = kind
-        self.quizChoices = quizChoices
-        self.quizAnswer = quizAnswer
-        self.quizExplain = quizExplain
-        self.tests = tests
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(String.self, forKey: .id)
-        title = try container.decode(String.self, forKey: .title)
-        explanation = try container.decode(String.self, forKey: .explanation)
-        exampleCode = try container.decode(String.self, forKey: .exampleCode)
-        exampleNote = try container.decode(String.self, forKey: .exampleNote)
-        exercise = try container.decode(String.self, forKey: .exercise)
-        starterCode = try container.decode(String.self, forKey: .starterCode)
-        hints = try container.decode([String].self, forKey: .hints)
-        sourceMustContain = try container.decode([String].self, forKey: .sourceMustContain)
-        sourceMustContainOneOf = try container.decode([String].self, forKey: .sourceMustContainOneOf)
-        xp = try container.decode(Int.self, forKey: .xp)
-        kind = try container.decodeIfPresent(String.self, forKey: .kind) ?? "code"
-        quizChoices = try container.decodeIfPresent([String].self, forKey: .quizChoices) ?? []
-        quizAnswer = try container.decodeIfPresent(Int.self, forKey: .quizAnswer) ?? -1
-        quizExplain = try container.decodeIfPresent(String.self, forKey: .quizExplain) ?? ""
-        tests = try container.decodeIfPresent([LessonTest].self, forKey: .tests) ?? []
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(title, forKey: .title)
-        try container.encode(explanation, forKey: .explanation)
-        try container.encode(exampleCode, forKey: .exampleCode)
-        try container.encode(exampleNote, forKey: .exampleNote)
-        try container.encode(exercise, forKey: .exercise)
-        try container.encode(starterCode, forKey: .starterCode)
-        try container.encode(hints, forKey: .hints)
-        try container.encode(sourceMustContain, forKey: .sourceMustContain)
-        try container.encode(sourceMustContainOneOf, forKey: .sourceMustContainOneOf)
-        try container.encode(xp, forKey: .xp)
-        try container.encode(kind, forKey: .kind)
-        try container.encode(quizChoices, forKey: .quizChoices)
-        try container.encode(quizAnswer, forKey: .quizAnswer)
-        try container.encode(quizExplain, forKey: .quizExplain)
-        try container.encode(tests, forKey: .tests)
-    }
 }
 
 struct LessonTest: Codable, Hashable {
@@ -117,6 +93,26 @@ struct LessonTest: Codable, Hashable {
     var stdoutEquals: String?
     var stdoutContains: [String]
     var values: [String: String]
+}
+
+enum PracticeKey {
+    static let separator: Character = "/"
+
+    static func make(lessonID: String, practiceID: String) -> String {
+        "\(lessonID)\(separator)\(practiceID)"
+    }
+
+    static func isPracticeKey(_ key: String) -> Bool {
+        key.contains(separator)
+    }
+
+    static func split(_ key: String) -> (lessonID: String, practiceID: String)? {
+        guard let index = key.firstIndex(of: separator) else { return nil }
+        let lessonID = String(key[key.startIndex..<index])
+        let practiceID = String(key[key.index(after: index)...])
+        guard !lessonID.isEmpty, !practiceID.isEmpty else { return nil }
+        return (lessonID, practiceID)
+    }
 }
 
 struct UnitOutline: Equatable {
@@ -138,12 +134,15 @@ enum Curriculum {
         return map
     }()
 
-    static var orderedIDs: [String] {
-        units.flatMap { $0.lessons.map(\.id) }
-    }
+    static let orderedIDs: [String] = units.flatMap { $0.lessons.map(\.id) }
 
     static var outlines: [UnitOutline] {
         units.map { UnitOutline(id: $0.id, title: $0.title, lessonIDs: $0.lessons.map(\.id)) }
+    }
+
+    /// Lessons in units that are not bonus units.
+    static var coreIDs: [String] {
+        units.filter { !$0.optional }.flatMap { $0.lessons.map(\.id) }
     }
 
     static var totalXP: Int {
@@ -164,9 +163,13 @@ enum Curriculum {
         return lesson(id: ids[index + 1])
     }
 
+    static func decode(_ text: String) throws -> [Unit] {
+        try JSONDecoder().decode([Unit].self, from: Data(text.utf8))
+    }
+
     private static func loadUnits() -> [Unit] {
         do {
-            return try JSONDecoder().decode([Unit].self, from: Data(CurriculumJSON.text.utf8))
+            return try decode(CurriculumJSON.text)
         } catch {
             fatalError("Curriculum failed to decode: \(error)")
         }

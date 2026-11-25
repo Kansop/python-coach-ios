@@ -42,7 +42,7 @@ struct LessonMapView: View {
     private func node(_ lesson: Lesson) -> some View {
         let done = store.snapshot.lessons[lesson.id]?.completed == true
         let unlocked = store.isUnlocked(lesson.id)
-        let symbol = done ? "checkmark" : (lesson.isQuiz ? "questionmark" : (lesson.isFix ? "ladybug" : "circle.fill"))
+        let symbol = done ? "checkmark" : (lesson.isCheckpoint ? "eye.fill" : (lesson.isProject ? "hammer.fill" : "circle.fill"))
         let label = "\(lesson.title), \(done ? "complete" : (unlocked ? "ready" : "locked"))"
         if unlocked {
             NavigationLink(value: lesson.id) {

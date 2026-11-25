@@ -51,6 +51,10 @@ struct ErrorExplanation: Equatable {
     var title: String
     var message: String
     var line: Int?
+    /// The learner's code on that line, when it is known.
+    var lineText: String?
+    /// One concrete thing to try next.
+    var tip: String
     var detail: String
 }
 

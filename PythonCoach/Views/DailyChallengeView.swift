@@ -90,11 +90,11 @@ struct DailyChallengeView: View {
     private func run() {
         guard !isRunning else { return }
         isRunning = true
-        let lesson = pick.asLesson()
+        let practice = pick.asPractice()
         let source = code
         Task {
             var runs: [CapturedRun] = []
-            for test in lesson.tests {
+            for test in practice.tests {
                 let result = await engine.run(
                     code: source,
                     stdin: test.stdin,
@@ -105,7 +105,7 @@ struct DailyChallengeView: View {
                 runs.append(result)
                 if result.failed { break }
             }
-            let result = LessonChecker.evaluate(source: source, lesson: lesson, runs: runs)
+            let result = LessonChecker.evaluate(source: source, practice: practice, runs: runs)
             check = result
             isRunning = false
             if result.passed {

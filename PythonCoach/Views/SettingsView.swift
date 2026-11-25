@@ -3,7 +3,7 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject private var runtime: RuntimeManager
     @EnvironmentObject private var store: ProgressStore
-    @AppStorage(UserSettings.sound) private var soundEnabled = true
+    @AppStorage(UserSettings.sound) private var soundEnabled = false
     @AppStorage(UserSettings.haptics) private var hapticsEnabled = true
     @AppStorage(UserSettings.appearance) private var appearance = "system"
     @State private var confirmReset = false
@@ -16,7 +16,7 @@ struct SettingsView: View {
                     Toggle(isOn: $soundEnabled) {
                         Label("Success sound", systemImage: soundEnabled ? "speaker.wave.2.fill" : "speaker.slash.fill")
                     }
-                    Text("A short chime when an exercise passes. It follows the iPhone silent switch.")
+                    Text("Off unless you turn it on. A short chime when a lesson is finished. It follows the iPhone silent switch.")
                         .font(AppTheme.rounded(.footnote))
                         .foregroundStyle(AppTheme.muted)
                     Button {
@@ -90,8 +90,9 @@ struct WelcomeSheet: View {
 
     private let pages: [(String, String, String)] = [
         ("graduationcap.fill", "Python runs on this iPhone", "Nothing is sent to a server. There is no account, no ads, and no tracking. After one download, lessons work offline."),
-        ("book.fill", "Read, run, then type", "Each lesson is short. You read the idea, run an example, then type the exercise yourself."),
-        ("lightbulb.fill", "Hints and a streak", "Hints open one at a time and never show the whole answer. A daily challenge keeps your streak going.")
+        ("book.fill", "Learn, see, then try", "Each lesson teaches one idea. You read it, walk through an example line by line, then practice in small steps that start easy."),
+        ("lightbulb.fill", "Hints and help with errors", "Hints open one at a time. The last one shows the answer if you're stuck. When Python shows an error, the app explains it in plain words and points at the line."),
+        ("arrow.triangle.2.circlepath", "Review makes it stick", "Review brings back practice from lessons you finished, especially the ones you found tricky.")
     ]
 
     var body: some View {

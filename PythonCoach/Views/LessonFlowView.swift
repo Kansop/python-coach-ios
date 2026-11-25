@@ -1,23 +1,18 @@
 import SwiftUI
 
+/// A lesson: learn the idea, walk through an example, then practice in small steps.
 struct LessonFlowView: View {
     let lessonID: String
     @EnvironmentObject private var store: ProgressStore
     @EnvironmentObject private var engine: PythonEngine
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.colorScheme) private var scheme
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var currentID: String
     @State private var step = 0
     @State private var stepForward = true
-    @State private var code = ""
-    @State private var hintsUnlocked = 0
-    @State private var didLoad = false
     @State private var exampleRun: CapturedRun?
-    @State private var exerciseCheck: LessonCheck?
     @State private var isRunning = false
-    @State private var showReset = false
     @State private var celebration: CompletionResult?
 
     init(lessonID: String) {
@@ -29,17 +24,27 @@ struct LessonFlowView: View {
         Curriculum.lesson(id: currentID) ?? Curriculum.units[0].lessons[0]
     }
 
+    private var introSteps: Int {
+        lesson.hasExample ? 2 : 1
+    }
+
+    private var stepCount: Int {
+        introSteps + lesson.practices.count
+    }
+
     private var pythonReady: Bool {
         engine.phase == .ready || engine.phase == .running
     }
 
     var body: some View {
-        Group {
-            if lesson.isQuiz {
-                quizBody
-            } else {
-                codeBody
+        VStack(spacing: 0) {
+            stepHeader
+            ZStack {
+                currentStep
+                    .id("\(lesson.id)-\(step)")
+                    .transition(stepTransition)
             }
+            .animation(AppMotion.spring(reduceMotion), value: step)
         }
         .background(AppTheme.paper)
         .navigationTitle(lesson.title)
@@ -57,106 +62,31 @@ struct LessonFlowView: View {
             }
         }
         .animation(AppMotion.spring(reduceMotion), value: celebration != nil)
-        .onAppear(perform: loadIfNeeded)
         .onChange(of: currentID) { _, _ in
             step = 0
-            loadLessonState()
-        }
-        .task(id: code) {
-            guard didLoad, !lesson.isQuiz else { return }
-            let id = lesson.id
-            let starter = lesson.starterCode
-            let current = code
-            try? await Task.sleep(nanoseconds: 400_000_000)
-            store.saveCode(lessonID: id, code: current, starter: starter)
+            exampleRun = nil
+            celebration = nil
         }
         .onDisappear {
-            if didLoad, !lesson.isQuiz {
-                store.saveCode(lessonID: lesson.id, code: code, starter: lesson.starterCode)
-            }
             if engine.inputRequest != nil {
                 engine.finishInput(nil)
             }
         }
     }
 
-    private var quizBody: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                Text(lesson.explanation)
-                    .font(AppTheme.rounded(.title3))
-                    .foregroundStyle(AppTheme.ink)
-                    .fixedSize(horizontal: false, vertical: true)
-                Text(lesson.exercise)
-                    .font(AppTheme.rounded(.headline, weight: .semibold))
-                    .foregroundStyle(AppTheme.ink)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityAddTraits(.isHeader)
-                ForEach(Array(lesson.quizChoices.enumerated()), id: \.offset) { index, choice in
-                    Button {
-                        answerQuiz(index)
-                    } label: {
-                        HStack {
-                            Text(choice)
-                                .font(AppTheme.rounded(.body, weight: .semibold))
-                                .foregroundStyle(AppTheme.ink)
-                                .multilineTextAlignment(.leading)
-                            Spacer()
-                            Image(systemName: "circle")
-                                .foregroundStyle(AppTheme.muted)
-                        }
-                        .padding(14)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .coachCard()
-                    }
-                    .buttonStyle(PressScaleButtonStyle())
-                    .accessibilityLabel("Choice \(index + 1): \(choice)")
-                }
-                if let exerciseCheck, !exerciseCheck.passed {
-                    FeedbackCard(check: exerciseCheck)
-                    hintSection
-                }
+    @ViewBuilder
+    private var currentStep: some View {
+        if step == 0 {
+            learnStep
+        } else if step == 1 && lesson.hasExample {
+            exampleStep
+        } else {
+            let index = min(max(step - introSteps, 0), max(lesson.practices.count - 1, 0))
+            if lesson.practices.indices.contains(index) {
+                practiceStep(index)
+            } else {
+                learnStep
             }
-            .padding(20)
-            .frame(maxWidth: 760)
-            .frame(maxWidth: .infinity)
-        }
-    }
-
-    private var codeBody: some View {
-        VStack(spacing: 0) {
-            stepHeader
-            ZStack {
-                if step == 0 {
-                    learnStep.transition(stepTransition)
-                } else if step == 1 {
-                    exampleStep.transition(stepTransition)
-                } else {
-                    exerciseStep.transition(stepTransition)
-                }
-            }
-            .animation(AppMotion.spring(reduceMotion), value: step)
-            bottomBar
-        }
-        .toolbar {
-            if step == 2 {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showReset = true
-                    } label: {
-                        Image(systemName: "arrow.counterclockwise")
-                    }
-                    .accessibilityLabel("Reset code")
-                }
-            }
-        }
-        .confirmationDialog("Reset this code to the starter?", isPresented: $showReset, titleVisibility: .visible) {
-            Button("Reset code", role: .destructive) {
-                code = lesson.starterCode
-                exerciseCheck = nil
-                store.saveCode(lessonID: lesson.id, code: lesson.starterCode, starter: lesson.starterCode)
-            }
-            Button("Cancel", role: .cancel) {}
         }
     }
 
@@ -168,170 +98,264 @@ struct LessonFlowView: View {
     }
 
     private var stepHeader: some View {
-        HStack(spacing: 8) {
-            ForEach(0..<3, id: \.self) { index in
+        HStack(spacing: 6) {
+            ForEach(0..<stepCount, id: \.self) { index in
                 Capsule()
                     .fill(index <= step ? AppTheme.accent : AppTheme.line)
                     .frame(height: 6)
-                    .animation(AppMotion.spring(reduceMotion), value: step)
             }
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)
+        .padding(.bottom, 4)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Step \(step + 1) of 3")
+        .accessibilityLabel("Step \(step + 1) of \(stepCount)")
     }
+
+    // MARK: - Learn
 
     private var learnStep: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                Text(lesson.explanation)
-                    .font(AppTheme.rounded(.title3))
-                    .foregroundStyle(AppTheme.ink)
-                    .fixedSize(horizontal: false, vertical: true)
-                Label("Next you'll run an example, then type your own.", systemImage: "book.fill")
-                    .font(AppTheme.rounded(.subheadline))
-                    .foregroundStyle(AppTheme.muted)
-            }
-            .padding(20)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-    }
-
-    private var exampleStep: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 14) {
-                Text(lesson.exampleNote)
-                    .font(AppTheme.rounded(.body))
-                    .foregroundStyle(AppTheme.ink)
-                    .fixedSize(horizontal: false, vertical: true)
-                HighlightedCode(code: lesson.exampleCode)
-                if let exampleRun {
-                    ConsoleBlock(
-                        sections: [OutputSection(index: 0, title: "Output", stdout: exampleRun.stdout, stderr: exampleRun.stderr)],
-                        emptyText: exampleRun.cancelled ? "You closed the question." : "Run the example to see the output."
-                    )
-                    if exampleRun.timedOut || exampleRun.errorType != nil {
-                        let error = FriendlyErrors.explain(
-                            type: exampleRun.errorType,
-                            message: exampleRun.errorMessage,
-                            traceback: exampleRun.traceback,
-                            timedOut: exampleRun.timedOut
-                        )
-                        Text(error.message)
-                            .font(AppTheme.rounded(.subheadline))
-                            .foregroundStyle(AppTheme.danger)
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    if lesson.isProject {
+                        Label("Project: \(lesson.practices.count) small steps", systemImage: "hammer.fill")
+                            .font(AppTheme.rounded(.subheadline, weight: .bold))
+                            .foregroundStyle(AppTheme.accent)
+                    } else if lesson.isCheckpoint {
+                        Label("Checkpoint: predict what Python prints", systemImage: "eye.fill")
+                            .font(AppTheme.rounded(.subheadline, weight: .bold))
+                            .foregroundStyle(AppTheme.accent)
                     }
-                } else {
-                    ConsoleBlock(sections: [], emptyText: "Run the example to see the output.")
-                }
-            }
-            .padding(20)
-        }
-        .scrollDismissesKeyboard(.interactively)
-    }
-
-    private var exerciseStep: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 14) {
-                Text(lesson.isFix ? "Fix the bug" : "Your turn")
-                    .font(AppTheme.rounded(.caption, weight: .bold))
-                    .foregroundStyle(lesson.isFix ? AppTheme.danger : AppTheme.accent)
-                if lesson.isFix {
-                    Label("The starter has a bug. Change it until the checks pass.", systemImage: "ladybug")
-                        .font(AppTheme.rounded(.subheadline))
-                        .foregroundStyle(AppTheme.ink)
-                }
-                Text(lesson.exercise)
-                    .font(AppTheme.rounded(.body))
-                    .foregroundStyle(AppTheme.ink)
-                    .fixedSize(horizontal: false, vertical: true)
-                hintSection
-                CodeEditor(text: $code, palette: EditorPalette.forScheme(scheme))
-                    .frame(height: 240)
-                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(AppTheme.line, lineWidth: 1)
-                    )
-                if let exerciseCheck {
-                    FeedbackCard(check: exerciseCheck)
-                    ConsoleBlock(
-                        sections: exerciseCheck.sections,
-                        emptyText: "Run your code to see what Python says."
-                    )
-                } else {
-                    ConsoleBlock(sections: [], emptyText: "Run your code to see what Python says.")
-                }
-            }
-            .padding(20)
-        }
-        .scrollDismissesKeyboard(.interactively)
-    }
-
-    private var hintSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            ForEach(Array(lesson.hints.prefix(hintsUnlocked).enumerated()), id: \.offset) { index, hint in
-                HStack(alignment: .top, spacing: 8) {
-                    Image(systemName: "lightbulb.fill")
-                        .foregroundStyle(AppTheme.flameStart)
-                    Text("Hint \(index + 1): \(hint)")
-                        .font(AppTheme.rounded(.subheadline))
+                    if !lesson.terms.isEmpty {
+                        Text("New words")
+                            .font(AppTheme.rounded(.headline, weight: .bold))
+                            .foregroundStyle(AppTheme.ink)
+                            .accessibilityAddTraits(.isHeader)
+                        ForEach(lesson.terms, id: \.word) { term in
+                            termCard(term)
+                        }
+                    }
+                    Text(lesson.explanation)
+                        .font(AppTheme.rounded(.title3))
                         .foregroundStyle(AppTheme.ink)
                         .fixedSize(horizontal: false, vertical: true)
+                    if !lesson.why.isEmpty {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Label("Why it works", systemImage: "gearshape.2.fill")
+                                .font(AppTheme.rounded(.subheadline, weight: .bold))
+                                .foregroundStyle(AppTheme.accent)
+                            Text(lesson.why)
+                                .font(AppTheme.rounded(.body))
+                                .foregroundStyle(AppTheme.ink)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        .padding(14)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .coachCard()
+                    }
+                }
+                .padding(20)
+                .frame(maxWidth: 760)
+                .frame(maxWidth: .infinity)
+            }
+            bar {
+                PrimaryButton(title: lesson.hasExample ? "See an example" : "Start step 1", systemImage: "arrow.right") {
+                    changeStep(1)
                 }
             }
-            if hintsUnlocked < lesson.hints.count {
-                Button {
-                    withAnimation(AppMotion.spring(reduceMotion)) {
-                        hintsUnlocked = store.revealNextHint(for: lesson)
-                    }
-                } label: {
-                    Label(hintsUnlocked == 0 ? "Need a hint?" : "Another hint", systemImage: "lightbulb")
-                        .font(AppTheme.rounded(.subheadline, weight: .semibold))
-                }
-                .buttonStyle(PressScaleButtonStyle())
-                Text("\(lesson.hints.count - hintsUnlocked) left. Hints never show the full answer.")
-                    .font(AppTheme.rounded(.caption))
+        }
+    }
+
+    private func termCard(_ term: Term) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(term.word)
+                .font(AppTheme.rounded(.headline, weight: .bold))
+                .foregroundStyle(AppTheme.accent)
+            Text(term.meaning)
+                .font(AppTheme.rounded(.body))
+                .foregroundStyle(AppTheme.ink)
+                .fixedSize(horizontal: false, vertical: true)
+            if !term.like.isEmpty {
+                Text("Think of it like this: \(term.like)")
+                    .font(AppTheme.rounded(.subheadline))
                     .foregroundStyle(AppTheme.muted)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
         .coachCard()
+        .accessibilityElement(children: .combine)
     }
 
-    private var bottomBar: some View {
+    // MARK: - Example
+
+    private var exampleStep: some View {
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 14) {
+                    if !lesson.exampleNote.isEmpty {
+                        Text(lesson.exampleNote)
+                            .font(AppTheme.rounded(.body))
+                            .foregroundStyle(AppTheme.ink)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    HighlightedCode(code: lesson.exampleCode)
+                    exampleOutput
+                    if !lesson.walkthrough.isEmpty {
+                        Text("Line by line")
+                            .font(AppTheme.rounded(.headline, weight: .bold))
+                            .foregroundStyle(AppTheme.ink)
+                            .accessibilityAddTraits(.isHeader)
+                        ForEach(Array(lesson.walkthrough.enumerated()), id: \.offset) { index, walk in
+                            walkRow(index: index, walk: walk)
+                        }
+                    }
+                    if !lesson.mistakes.isEmpty {
+                        Text("Watch out for")
+                            .font(AppTheme.rounded(.headline, weight: .bold))
+                            .foregroundStyle(AppTheme.ink)
+                            .accessibilityAddTraits(.isHeader)
+                        ForEach(Array(lesson.mistakes.enumerated()), id: \.offset) { _, mistake in
+                            mistakeCard(mistake)
+                        }
+                    }
+                }
+                .padding(20)
+                .frame(maxWidth: 760)
+                .frame(maxWidth: .infinity)
+            }
+            bar {
+                PrimaryButton(
+                    title: isRunning ? "Running" : "Run the example",
+                    systemImage: isRunning ? nil : "play.fill",
+                    enabled: pythonReady && !isRunning
+                ) {
+                    runExample()
+                }
+                Button("I'm ready to practice") { changeStep(2) }
+                    .font(AppTheme.rounded(.subheadline, weight: .semibold))
+                    .foregroundStyle(AppTheme.accent)
+                    .buttonStyle(PressScaleButtonStyle())
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var exampleOutput: some View {
+        if let exampleRun {
+            ConsoleBlock(
+                sections: [OutputSection(index: 0, title: "Output", stdout: exampleRun.stdout, stderr: exampleRun.stderr)],
+                emptyText: exampleRun.cancelled ? "You closed the question." : "This example doesn't print anything."
+            )
+            if exampleRun.timedOut || exampleRun.errorType != nil {
+                ErrorHelpView(
+                    error: FriendlyErrors.explain(
+                        type: exampleRun.errorType,
+                        message: exampleRun.errorMessage,
+                        traceback: exampleRun.traceback,
+                        timedOut: exampleRun.timedOut,
+                        source: lesson.exampleCode
+                    ),
+                    showTitle: true
+                )
+            }
+        } else {
+            ConsoleBlock(sections: [], emptyText: "Press Run the example to see what it prints.")
+        }
+    }
+
+    private func walkRow(index: Int, walk: WalkStep) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Text("\(index + 1)")
+                .font(AppTheme.rounded(.caption, weight: .bold))
+                .foregroundStyle(AppTheme.onAccent)
+                .frame(width: 24, height: 24)
+                .background(AppTheme.accent)
+                .clipShape(Circle())
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(walk.code)
+                    .font(.system(size: 15, design: .monospaced))
+                    .foregroundStyle(AppTheme.ink)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(walk.note)
+                    .font(AppTheme.rounded(.subheadline))
+                    .foregroundStyle(AppTheme.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .coachCard()
+        .accessibilityElement(children: .combine)
+    }
+
+    private func mistakeCard(_ mistake: Mistake) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Label("Oops", systemImage: "xmark.circle")
+                .font(AppTheme.rounded(.caption, weight: .bold))
+                .foregroundStyle(AppTheme.flameStart)
+            Text(mistake.wrong)
+                .font(.system(size: 15, design: .monospaced))
+                .foregroundStyle(AppTheme.ink)
+                .fixedSize(horizontal: false, vertical: true)
+            Text(mistake.why)
+                .font(AppTheme.rounded(.subheadline))
+                .foregroundStyle(AppTheme.ink)
+                .fixedSize(horizontal: false, vertical: true)
+            Label("Better", systemImage: "checkmark.circle")
+                .font(AppTheme.rounded(.caption, weight: .bold))
+                .foregroundStyle(AppTheme.success)
+            Text(mistake.fix)
+                .font(.system(size: 15, design: .monospaced))
+                .foregroundStyle(AppTheme.ink)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .coachCard()
+        .accessibilityElement(children: .combine)
+    }
+
+    // MARK: - Practice
+
+    private func practiceStep(_ index: Int) -> some View {
+        let practice = lesson.practices[index]
+        let isLast = index == lesson.practices.count - 1
+        return PracticePanel(
+            lesson: lesson,
+            practice: practice,
+            number: index + 1,
+            total: lesson.practices.count,
+            mode: .lesson,
+            continueTitle: isLast ? (nextTitle ?? "Finish") : (lesson.isProject ? "Next step" : "Next practice"),
+            onSolved: { _ in practiceSolved() },
+            onContinue: {
+                if isLast {
+                    finishOrNext()
+                } else {
+                    changeStep(step + 1)
+                }
+            },
+            onBack: { changeStep(step - 1) }
+        )
+        .id(lesson.practiceKey(practice))
+    }
+
+    private func bar<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
         VStack(spacing: 8) {
             if !pythonReady {
                 Text(engine.phase == .failed ? engine.failureMessage : "Getting Python ready…")
                     .font(AppTheme.rounded(.caption, weight: .semibold))
                     .foregroundStyle(AppTheme.muted)
             }
-            if step == 0 {
-                PrimaryButton(title: "Try the example", systemImage: "arrow.right") {
-                    changeStep(1)
-                }
-            } else if step == 1 {
-                PrimaryButton(
-                    title: isRunning ? "Running" : "Run example",
-                    systemImage: isRunning ? nil : "play.fill",
-                    enabled: pythonReady && !isRunning
-                ) {
-                    runExample()
-                }
-                Button("I'm ready to try") { changeStep(2) }
-                    .font(AppTheme.rounded(.subheadline, weight: .semibold))
-                    .foregroundStyle(AppTheme.accent)
-                    .buttonStyle(PressScaleButtonStyle())
-            } else {
-                PrimaryButton(
-                    title: isRunning ? "Running" : "Run my code",
-                    systemImage: isRunning ? nil : "play.fill",
-                    enabled: pythonReady && !isRunning
-                ) {
-                    runExercise()
-                }
+            content()
+            if step > 0 {
+                Button("Back") { changeStep(step - 1) }
+                    .font(AppTheme.rounded(.footnote, weight: .semibold))
+                    .foregroundStyle(AppTheme.muted)
             }
         }
         .padding(.horizontal, 20)
@@ -348,33 +372,29 @@ struct LessonFlowView: View {
     }
 
     private func changeStep(_ newStep: Int) {
-        stepForward = newStep > step
+        let clamped = min(max(newStep, 0), stepCount - 1)
+        stepForward = clamped > step
         withAnimation(AppMotion.spring(reduceMotion)) {
-            step = newStep
+            step = clamped
         }
     }
 
-    private func loadIfNeeded() {
-        guard !didLoad else { return }
-        didLoad = true
-        loadLessonState()
+    private func practiceSolved() {
+        let passed = store.snapshot.passedPractices(in: lesson)
+        guard passed >= lesson.practices.count else { return }
+        let reward = store.recordPass(lesson: lesson)
+        withAnimation(AppMotion.spring(reduceMotion)) {
+            celebration = reward
+        }
     }
 
-    private func loadLessonState() {
-        code = store.code(for: lesson)
-        hintsUnlocked = store.hintsUnlocked(for: lesson.id)
-        exampleRun = nil
-        exerciseCheck = nil
-        celebration = nil
-    }
-
-    private func answerQuiz(_ choice: Int) {
-        let check = LessonChecker.gradeQuiz(lesson: lesson, choice: choice)
-        exerciseCheck = check
-        if check.passed {
-            let reward = store.recordPass(lesson: lesson)
-            withAnimation(AppMotion.spring(reduceMotion)) {
-                celebration = reward
+    private func finishOrNext() {
+        if store.isLessonCompleted(lesson.id) {
+            goNext()
+        } else {
+            practiceSolved()
+            if !store.isLessonCompleted(lesson.id) {
+                dismiss()
             }
         }
     }
@@ -382,46 +402,11 @@ struct LessonFlowView: View {
     private func runExample() {
         guard !isRunning else { return }
         isRunning = true
+        let source = lesson.exampleCode
         Task {
-            let result = await engine.run(
-                code: lesson.exampleCode,
-                stdin: [],
-                append: "",
-                names: [],
-                interactive: true
-            )
+            let result = await engine.run(code: source, stdin: [], append: "", names: [], interactive: true)
             exampleRun = result
             isRunning = false
-        }
-    }
-
-    private func runExercise() {
-        guard !isRunning else { return }
-        isRunning = true
-        let lesson = lesson
-        let source = code
-        Task {
-            var runs: [CapturedRun] = []
-            for test in lesson.tests {
-                let result = await engine.run(
-                    code: source,
-                    stdin: test.stdin,
-                    append: test.appendCode ?? "",
-                    names: Array(test.values.keys),
-                    interactive: false
-                )
-                runs.append(result)
-                if result.failed { break }
-            }
-            let check = LessonChecker.evaluate(source: source, lesson: lesson, runs: runs)
-            exerciseCheck = check
-            isRunning = false
-            if check.passed {
-                let reward = store.recordPass(lesson: lesson)
-                withAnimation(AppMotion.spring(reduceMotion)) {
-                    celebration = reward
-                }
-            }
         }
     }
 
