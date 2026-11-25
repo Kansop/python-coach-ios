@@ -23,6 +23,8 @@ struct UnitDetailView: View {
                 }
             }
             .padding(20)
+            .frame(maxWidth: 860)
+            .frame(maxWidth: .infinity)
         }
         .background(AppTheme.paper)
         .navigationTitle(unit.title)

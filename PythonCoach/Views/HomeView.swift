@@ -18,6 +18,7 @@ struct HomeView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
+                    dailyCard
                     header
                     if engine.phase == .failed {
                         engineBanner
@@ -31,9 +32,15 @@ struct HomeView: View {
                     } else if store.snapshot.completedCount >= Curriculum.orderedIDs.count {
                         finishedCard
                     }
+                    Text("Lesson map")
+                        .font(AppTheme.rounded(.title3, weight: .bold))
+                        .foregroundStyle(AppTheme.ink)
+                        .accessibilityAddTraits(.isHeader)
+                    LessonMapView()
                     Text("Units")
                         .font(AppTheme.rounded(.title3, weight: .bold))
                         .foregroundStyle(AppTheme.ink)
+                        .accessibilityAddTraits(.isHeader)
                     ForEach(Array(Curriculum.units.enumerated()), id: \.element.id) { index, unit in
                         NavigationLink(value: unit) {
                             unitRow(unit)
@@ -45,6 +52,8 @@ struct HomeView: View {
                     }
                 }
                 .padding(20)
+                .frame(maxWidth: 980)
+                .frame(maxWidth: .infinity)
             }
             .background(AppTheme.paper)
             .navigationTitle("Python Coach")
@@ -54,8 +63,39 @@ struct HomeView: View {
             .navigationDestination(for: String.self) { id in
                 LessonFlowView(lessonID: id)
             }
+            .navigationDestination(for: DailyRoute.self) { _ in
+                DailyChallengeView()
+            }
             .onAppear { appeared = true }
         }
+    }
+
+    private var dailyCard: some View {
+        let done = store.dailyRecord().isDone(on: Date(), calendar: calendar)
+        let pick = DailyChallengeBank.pick(on: Date(), calendar: calendar)
+        return NavigationLink(value: DailyRoute()) {
+            HStack(spacing: 12) {
+                Image(systemName: done ? "checkmark.circle.fill" : "sun.max.fill")
+                    .font(.title2)
+                    .foregroundStyle(done ? AppTheme.success : AppTheme.flameStart)
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(done ? "Daily challenge done" : "Daily challenge")
+                        .font(AppTheme.rounded(.caption, weight: .semibold))
+                        .foregroundStyle(AppTheme.muted)
+                    Text(pick.title)
+                        .font(AppTheme.rounded(.headline, weight: .bold))
+                        .foregroundStyle(AppTheme.ink)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(AppTheme.muted)
+            }
+            .padding(16)
+            .coachCard()
+        }
+        .buttonStyle(PressScaleButtonStyle())
+        .accessibilityLabel(done ? "Daily challenge done, \(pick.title)" : "Daily challenge, \(pick.title)")
     }
 
     private var header: some View {

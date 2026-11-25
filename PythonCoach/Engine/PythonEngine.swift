@@ -71,8 +71,8 @@ final class PythonEngine: NSObject, ObservableObject {
     private var waiter: CheckedContinuation<CapturedRun, Never>?
     private var inputContinuation: CheckedContinuation<String?, Never>?
     private var runInFlight = false
-    private var bootTimer: DispatchWorkItem?
-    private var runTimer: DispatchWorkItem?
+    private var bootWatch: Task<Void, Never>?
+    private var runWatch: Task<Void, Never>?
 
     func start(cacheDirectory: URL) {
         self.cacheDirectory = cacheDirectory
@@ -131,14 +131,14 @@ final class PythonEngine: NSObject, ObservableObject {
         }
         switch envelope.type {
         case "ready":
-            bootTimer?.cancel()
+            bootWatch?.cancel()
             failureMessage = ""
             failureDetail = ""
             if waiter == nil {
                 phase = .ready
             }
         case "boot-error":
-            bootTimer?.cancel()
+            bootWatch?.cancel()
             phase = .failed
             failureMessage = "Python didn't start."
             failureDetail = envelope.message ?? ""
@@ -162,7 +162,7 @@ final class PythonEngine: NSObject, ObservableObject {
 
     private func boot() {
         guard let cacheDirectory else { return }
-        bootTimer?.cancel()
+        bootWatch?.cancel()
         bootToken += 1
         let token = bootToken
         phase = .booting
@@ -187,14 +187,12 @@ final class PythonEngine: NSObject, ObservableObject {
         #endif
         webView = view
         webViewGeneration += 1
-        // Load on the next turn so SwiftUI can put the web view in the window first.
-        // A zero-size or not-yet-attached WKWebView can stall JavaScript.
+        // Give SwiftUI a moment to put the web view in the window before loading.
         if let url = URL(string: "pycoach://local/runner.html") {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self, weak view] in
-                Task { @MainActor in
-                    guard let self, self.bootToken == token else { return }
-                    view?.load(URLRequest(url: url))
-                }
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 200_000_000)
+                guard !Task.isCancelled, self.bootToken == token else { return }
+                self.webView?.load(URLRequest(url: url))
             }
         }
         armBootTimer(token: token)
@@ -222,10 +220,11 @@ final class PythonEngine: NSObject, ObservableObject {
             self.armRunTimer(token: token)
             webView.evaluateJavaScript(script) { _, error in
                 guard let error else { return }
+                let text = error.localizedDescription
                 Task { @MainActor in
                     self.finishWaiting(
                         token: token,
-                        run: .failure(type: "RuntimeError", message: "Could not talk to Python. \(error.localizedDescription)")
+                        run: .failure(type: "RuntimeError", message: "Could not talk to Python. \(text)")
                     )
                 }
             }
@@ -245,40 +244,34 @@ final class PythonEngine: NSObject, ObservableObject {
 
     private func finishWaiting(token: Int, run: CapturedRun) {
         guard token == waiterToken, let continuation = waiter else { return }
-        runTimer?.cancel()
+        runWatch?.cancel()
         waiter = nil
         continuation.resume(returning: run)
     }
 
     private func armBootTimer(token: Int) {
-        bootTimer?.cancel()
-        let item = DispatchWorkItem { [weak self] in
-            Task { @MainActor in
-                guard let self, self.bootToken == token else { return }
-                guard self.phase == .booting || self.phase == .restarting else { return }
-                self.phase = .failed
-                self.failureMessage = "Python took too long to start."
-                self.failureDetail = "Try again. If it keeps happening, redownload Python in Settings."
-            }
+        bootWatch?.cancel()
+        bootWatch = Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 40_000_000_000)
+            guard !Task.isCancelled, self.bootToken == token else { return }
+            guard self.phase == .booting || self.phase == .restarting else { return }
+            self.phase = .failed
+            self.failureMessage = "Python took too long to start."
+            self.failureDetail = "Try again. If it keeps happening, redownload Python in Settings."
         }
-        bootTimer = item
-        DispatchQueue.main.asyncAfter(deadline: .now() + 40, execute: item)
     }
 
     private func armRunTimer(token: Int) {
-        runTimer?.cancel()
-        let item = DispatchWorkItem { [weak self] in
-            Task { @MainActor in
-                guard let self, self.waiterToken == token, self.waiter != nil else { return }
-                self.forceRestart()
-            }
+        runWatch?.cancel()
+        runWatch = Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 8_000_000_000)
+            guard !Task.isCancelled, self.waiterToken == token, self.waiter != nil else { return }
+            self.forceRestart()
         }
-        runTimer = item
-        DispatchQueue.main.asyncAfter(deadline: .now() + 8, execute: item)
     }
 
     private func forceRestart() {
-        runTimer?.cancel()
+        runWatch?.cancel()
         let continuation = waiter
         waiter = nil
         phase = .booting

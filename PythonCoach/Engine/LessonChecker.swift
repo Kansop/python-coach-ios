@@ -1,6 +1,31 @@
 import Foundation
 
 enum LessonChecker {
+    static func gradeQuiz(lesson: Lesson, choice: Int) -> LessonCheck {
+        let correct = choice == lesson.quizAnswer && lesson.quizChoices.indices.contains(choice)
+        if correct {
+            return LessonCheck(
+                passed: true,
+                headline: "Nice work",
+                message: lesson.quizExplain.isEmpty ? "That is the right answer." : lesson.quizExplain,
+                expected: nil,
+                actual: nil,
+                error: nil,
+                sections: []
+            )
+        }
+        let picked = lesson.quizChoices.indices.contains(choice) ? lesson.quizChoices[choice] : "that"
+        return LessonCheck(
+            passed: false,
+            headline: "Not yet",
+            message: "\(picked) is not the one. \(lesson.quizExplain)",
+            expected: lesson.quizChoices.indices.contains(lesson.quizAnswer) ? lesson.quizChoices[lesson.quizAnswer] : nil,
+            actual: lesson.quizChoices.indices.contains(choice) ? lesson.quizChoices[choice] : nil,
+            error: nil,
+            sections: []
+        )
+    }
+
     static func evaluate(source: String, lesson: Lesson, runs: [CapturedRun]) -> LessonCheck {
         let multiple = lesson.tests.count > 1
         let sections = runs.enumerated().map { index, run in

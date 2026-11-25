@@ -15,6 +15,8 @@ import json
 import sys
 from pathlib import Path
 
+from more_lessons import extra_units
+
 ROOT = Path(__file__).resolve().parents[1]
 HARNESS_SWIFT = ROOT / "PythonCoach" / "Engine" / "PythonHarness.swift"
 CURRICULUM_SWIFT = ROOT / "PythonCoach" / "Curriculum" / "CurriculumJSON.swift"
@@ -351,6 +353,10 @@ def lesson(
         "sourceMustContain": list(source or []),
         "sourceMustContainOneOf": list(one_of or []),
         "xp": xp,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "solution": solution.strip("\n"),
         "exampleStdin": list(example_stdin or []),
         "tests": tests,
@@ -1396,16 +1402,49 @@ def emit_swift(path: Path, type_name: str, body: str, note: str) -> None:
     path.write_text(contents, encoding="utf-8")
 
 
+def public_lesson(item: dict, tests: list) -> dict:
+    return {
+        "id": item["id"],
+        "title": item["title"],
+        "explanation": item["explanation"],
+        "exampleCode": item["exampleCode"],
+        "exampleNote": item["exampleNote"],
+        "exercise": item["exercise"],
+        "starterCode": item["starterCode"],
+        "hints": item["hints"],
+        "sourceMustContain": item["sourceMustContain"],
+        "sourceMustContainOneOf": item["sourceMustContainOneOf"],
+        "xp": item["xp"],
+        "kind": item.get("kind", "code"),
+        "quizChoices": item.get("quizChoices", []),
+        "quizAnswer": item.get("quizAnswer", -1),
+        "quizExplain": item.get("quizExplain", ""),
+        "tests": tests,
+    }
+
+
 def main() -> None:
     self_test()
     built_units = []
     lesson_count = 0
     xp_total = 0
-    for unit in units():
+    for unit in units() + extra_units():
         public_lessons = []
         for item in unit["lessons"]:
             lesson_count += 1
             xp_total += item["xp"]
+            item.setdefault("kind", "code")
+            item.setdefault("quizChoices", [])
+            item.setdefault("quizAnswer", -1)
+            item.setdefault("quizExplain", "")
+            if item["kind"] == "quiz":
+                choices = item["quizChoices"]
+                if len(choices) < 2 or not (0 <= item["quizAnswer"] < len(choices)):
+                    raise SystemExit(f"bad quiz {item['id']}")
+                if len(item["hints"]) < 2:
+                    raise SystemExit(f"{item['id']} needs at least 2 hints")
+                public_lessons.append(public_lesson(item, []))
+                continue
             names = []
             for test in item["tests"]:
                 names.extend(test["valueNames"])
@@ -1469,22 +1508,7 @@ def main() -> None:
             )
             if example.get("errorType") or example.get("timedOut") or example.get("needsInput"):
                 raise SystemExit(f"example failed for {item['id']}: {example}")
-            public_lessons.append(
-                {
-                    "id": item["id"],
-                    "title": item["title"],
-                    "explanation": item["explanation"],
-                    "exampleCode": item["exampleCode"],
-                    "exampleNote": item["exampleNote"],
-                    "exercise": item["exercise"],
-                    "starterCode": item["starterCode"],
-                    "hints": item["hints"],
-                    "sourceMustContain": item["sourceMustContain"],
-                    "sourceMustContainOneOf": item["sourceMustContainOneOf"],
-                    "xp": item["xp"],
-                    "tests": finalized,
-                }
-            )
+            public_lessons.append(public_lesson(item, finalized))
         built_units.append(
             {
                 "id": unit["id"],
@@ -1494,8 +1518,8 @@ def main() -> None:
                 "lessons": public_lessons,
             }
         )
-    if lesson_count < 30:
-        raise SystemExit(f"expected at least 30 lessons, found {lesson_count}")
+    if lesson_count < 80:
+        raise SystemExit(f"expected at least 80 lessons, found {lesson_count}")
     payload = json.dumps(built_units, indent=2, ensure_ascii=False)
     json.loads(payload)
     emit_swift(

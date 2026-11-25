@@ -114,6 +114,33 @@ final class ProgressStore: ObservableObject {
         )
     }
 
+    func dailyRecord() -> DailyRecord {
+        DailyRecord(stamp: UserDefaults.standard.string(forKey: Self.dailyKey) ?? "")
+    }
+
+    func markDailyDone(xp: Int, now: Date = Date(), calendar: Calendar = .current) -> Bool {
+        let record = dailyRecord()
+        if record.isDone(on: now, calendar: calendar) {
+            return false
+        }
+        let update = StreakLogic.registerActivity(
+            state: StreakState(
+                current: profile.currentStreak,
+                longest: profile.longestStreak,
+                lastActiveDay: profile.lastActiveDay
+            ),
+            now: now,
+            calendar: calendar
+        )
+        profile.currentStreak = update.state.current
+        profile.longestStreak = update.state.longest
+        profile.lastActiveDay = update.state.lastActiveDay
+        profile.xp += xp
+        UserDefaults.standard.set(record.completed(on: now, calendar: calendar).stamp, forKey: Self.dailyKey)
+        publish()
+        return true
+    }
+
     func reset() {
         let profiles = (try? context.fetch(FetchDescriptor<LearnerProfile>())) ?? []
         profiles.forEach { context.delete($0) }
@@ -124,6 +151,8 @@ final class ProgressStore: ObservableObject {
         profile = fresh
         publish()
     }
+
+    private static let dailyKey = "dailyCompletedStamp"
 
     private func record(id: String, starter: String) -> LessonProgress {
         if let existing = profile.lessons.first(where: { $0.lessonID == id }) {

@@ -13,11 +13,11 @@ final class CoachLogicTests: XCTestCase {
     }
 
     func testCurriculumShape() {
-        XCTAssertGreaterThanOrEqual(Curriculum.orderedIDs.count, 30)
+        XCTAssertGreaterThanOrEqual(Curriculum.orderedIDs.count, 80)
         XCTAssertEqual(Curriculum.orderedIDs.count, Set(Curriculum.orderedIDs).count)
-        XCTAssertEqual(Curriculum.units.count, 11)
+        XCTAssertGreaterThanOrEqual(Curriculum.units.count, 16)
         let requiredUnits = ["print", "variables", "strings", "math", "input", "choices", "loops", "lists", "functions", "dictionaries", "projects"]
-        XCTAssertEqual(Curriculum.units.map(\.id), requiredUnits)
+        XCTAssertEqual(Array(Curriculum.units.map(\.id).prefix(requiredUnits.count)), requiredUnits)
         XCTAssertNotNil(Curriculum.lesson(id: "print-hello"))
         XCTAssertNotNil(Curriculum.lesson(id: "proj-quiz"))
         var text = ""
@@ -27,21 +27,57 @@ final class CoachLogicTests: XCTestCase {
             text += unit.title + unit.summary
             for lesson in unit.lessons {
                 XCTAssertGreaterThanOrEqual(lesson.hints.count, 2)
-                XCTAssertFalse(lesson.tests.isEmpty)
                 XCTAssertFalse(lesson.explanation.isEmpty)
                 XCTAssertFalse(lesson.exampleCode.isEmpty)
                 XCTAssertFalse(lesson.exercise.isEmpty)
-                XCTAssertFalse(lesson.starterCode.isEmpty)
                 XCTAssertGreaterThan(lesson.xp, 0)
                 text += lesson.explanation + lesson.exercise + lesson.hints.joined() + lesson.title
-                for test in lesson.tests {
-                    let hasExpect = test.stdoutEquals != nil || !test.stdoutContains.isEmpty || !test.values.isEmpty
-                    XCTAssertTrue(hasExpect, lesson.id)
+                if lesson.isQuiz {
+                    XCTAssertGreaterThanOrEqual(lesson.quizChoices.count, 2)
+                    XCTAssertTrue(lesson.quizChoices.indices.contains(lesson.quizAnswer))
+                } else {
+                    XCTAssertFalse(lesson.tests.isEmpty)
+                    XCTAssertFalse(lesson.starterCode.isEmpty)
+                    for test in lesson.tests {
+                        let hasExpect = test.stdoutEquals != nil || !test.stdoutContains.isEmpty || !test.values.isEmpty
+                        XCTAssertTrue(hasExpect, lesson.id)
+                    }
                 }
             }
         }
         XCTAssertFalse(containsEmoji(text))
-        XCTAssertEqual(Curriculum.totalXP, 480)
+        XCTAssertGreaterThanOrEqual(Curriculum.totalXP, 800)
+        XCTAssertGreaterThanOrEqual(Curriculum.units.flatMap(\.lessons).filter(\.isQuiz).count, 5)
+        XCTAssertGreaterThanOrEqual(Curriculum.units.flatMap(\.lessons).filter(\.isFix).count, 5)
+    }
+
+    func testQuizAndDailyAndPlayground() throws {
+        let quiz = try XCTUnwrap(Curriculum.lesson(id: "q-bool"))
+        XCTAssertTrue(LessonChecker.gradeQuiz(lesson: quiz, choice: quiz.quizAnswer).passed)
+        let wrong = quiz.quizAnswer == 0 ? 1 : 0
+        XCTAssertFalse(LessonChecker.gradeQuiz(lesson: quiz, choice: wrong).passed)
+
+        let calendar = calendar
+        let first = DailyChallengeBank.pick(on: day(3), calendar: calendar)
+        XCTAssertEqual(first.id, DailyChallengeBank.pick(on: day(3), calendar: calendar).id)
+        var record = DailyRecord(stamp: "")
+        XCTAssertFalse(record.isDone(on: day(3), calendar: calendar))
+        record = record.completed(on: day(3), calendar: calendar)
+        XCTAssertTrue(record.isDone(on: day(3), calendar: calendar))
+        XCTAssertFalse(record.isDone(on: day(4), calendar: calendar))
+
+        let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: folder) }
+        let library = PlaygroundLibrary(directory: folder)
+        library.save(title: "Demo", code: "print(1)")
+        let again = PlaygroundLibrary(directory: folder)
+        XCTAssertEqual(again.snippets.count, 1)
+        XCTAssertEqual(again.snippets.first?.code, "print(1)")
+        if let id = again.snippets.first?.id {
+            again.delete(id)
+        }
+        XCTAssertTrue(PlaygroundLibrary(directory: folder).snippets.isEmpty)
     }
 
     func testUnlockOrder() {

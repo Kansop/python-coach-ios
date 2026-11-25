@@ -26,6 +26,10 @@ enum CurriculumJSON {
         "sourceMustContain": [],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -51,6 +55,10 @@ enum CurriculumJSON {
         "sourceMustContain": [],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -78,6 +86,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -105,6 +117,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -138,6 +154,10 @@ enum CurriculumJSON {
         "sourceMustContain": [],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -165,6 +185,10 @@ enum CurriculumJSON {
         "sourceMustContain": [],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -192,6 +216,10 @@ enum CurriculumJSON {
         "sourceMustContain": [],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -219,6 +247,10 @@ enum CurriculumJSON {
         "sourceMustContain": [],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -255,6 +287,10 @@ enum CurriculumJSON {
         "sourceMustContain": [],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -284,6 +320,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -314,6 +354,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -344,6 +388,10 @@ enum CurriculumJSON {
           "f'"
         ],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -374,6 +422,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -411,6 +463,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -438,6 +494,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -468,6 +528,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -495,6 +559,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -530,6 +598,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [
@@ -562,6 +634,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [
@@ -604,6 +680,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [
@@ -645,6 +725,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -672,6 +756,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -702,6 +790,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -731,6 +823,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -761,6 +857,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -799,6 +899,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -827,6 +931,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -854,6 +962,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -881,6 +993,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -916,6 +1032,10 @@ enum CurriculumJSON {
         "sourceMustContain": [],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -945,6 +1065,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -974,6 +1098,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -1003,6 +1131,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -1040,6 +1172,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -1067,6 +1203,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -1095,6 +1235,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -1123,6 +1267,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -1156,6 +1304,10 @@ enum CurriculumJSON {
         "sourceMustContain": [],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -1183,6 +1335,10 @@ enum CurriculumJSON {
         "sourceMustContain": [],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -1212,6 +1368,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -1251,6 +1411,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 20,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [
@@ -1299,6 +1463,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 20,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [
@@ -1343,6 +1511,10 @@ enum CurriculumJSON {
           "f'"
         ],
         "xp": 20,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [],
@@ -1375,6 +1547,10 @@ enum CurriculumJSON {
         ],
         "sourceMustContainOneOf": [],
         "xp": 20,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
         "tests": [
           {
             "stdin": [
@@ -1391,6 +1567,1377 @@ enum CurriculumJSON {
             ],
             "appendCode": null,
             "stdoutEquals": "7 + 5 = 3\nNot quite",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "string-tools",
+    "title": "String tools",
+    "summary": "Clean, search, and reshape text.",
+    "symbol": "textformat",
+    "lessons": [
+      {
+        "id": "str-strip",
+        "title": "Trim the edges",
+        "explanation": ".strip() removes spaces from both ends of a string. The middle stays as it is.",
+        "exampleCode": "raw = \"  hi  \"\nprint(raw.strip())",
+        "exampleNote": "The spaces around hi disappear.",
+        "exercise": "Set raw to \"  map  \" and print it with the edge spaces removed.",
+        "starterCode": "raw = \"  map  \"\nprint(raw)",
+        "hints": [
+          "Call .strip() on raw.",
+          "Print the result of raw.strip(), not the original raw."
+        ],
+        "sourceMustContain": [
+          "strip"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "map",
+            "stdoutContains": [],
+            "values": {
+              "raw": "'  map  '"
+            }
+          }
+        ]
+      },
+      {
+        "id": "str-replace",
+        "title": "Swap some letters",
+        "explanation": ".replace(old, new) returns a new string with each match swapped. The original can stay unchanged.",
+        "exampleCode": "word = \"cat\"\nprint(word.replace(\"c\", \"b\"))",
+        "exampleNote": "c becomes b, so you see bat.",
+        "exercise": "Set word to cat and print it with every c replaced by b.",
+        "starterCode": "word = \"cat\"\nprint(word)",
+        "hints": [
+          "replace takes the text to find and the text to put instead.",
+          "word.replace(\"c\", \"b\") builds bat."
+        ],
+        "sourceMustContain": [
+          "replace"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "bat",
+            "stdoutContains": [],
+            "values": {
+              "word": "'cat'"
+            }
+          }
+        ]
+      },
+      {
+        "id": "str-starts",
+        "title": "Does it start with this?",
+        "explanation": ".startswith() answers True or False. It is handy before you treat a line in a special way.",
+        "exampleCode": "name = \"python\"\nprint(name.startswith(\"py\"))",
+        "exampleNote": "python starts with py, so the answer is True.",
+        "exercise": "Set name to python and print whether it starts with py.",
+        "starterCode": "name = \"python\"\nprint(name)",
+        "hints": [
+          "Use startswith and pass the prefix in quotes.",
+          "Print the True or False result, not the name."
+        ],
+        "sourceMustContain": [
+          "startswith"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "True",
+            "stdoutContains": [],
+            "values": {
+              "name": "'python'"
+            }
+          }
+        ]
+      },
+      {
+        "id": "str-split",
+        "title": "Break on spaces",
+        "explanation": ".split() with no arguments cuts a string into a list of words. Spaces are the dividers.",
+        "exampleCode": "line = \"red blue\"\nprint(line.split())",
+        "exampleNote": "You get a list with two strings.",
+        "exercise": "Set line to \"one two three\" and print the list of words.",
+        "starterCode": "line = \"one two three\"\nprint(line)",
+        "hints": [
+          "line.split() makes the list.",
+          "Print that list. It should contain three words."
+        ],
+        "sourceMustContain": [
+          "split"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "['one', 'two', 'three']",
+            "stdoutContains": [],
+            "values": {
+              "line": "'one two three'"
+            }
+          }
+        ]
+      },
+      {
+        "id": "str-count",
+        "title": "Count a letter",
+        "explanation": ".count(piece) tells you how many times that piece appears. Overlaps are not the goal here. Just count.",
+        "exampleCode": "word = \"banana\"\nprint(word.count(\"a\"))",
+        "exampleNote": "banana has three a letters.",
+        "exercise": "Set word to banana and print how many times a appears.",
+        "starterCode": "word = \"banana\"\nprint(word)",
+        "hints": [
+          "count needs the letter you are looking for.",
+          "word.count(\"a\") is 3."
+        ],
+        "sourceMustContain": [
+          "count"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "3",
+            "stdoutContains": [],
+            "values": {
+              "word": "'banana'"
+            }
+          }
+        ]
+      },
+      {
+        "id": "q-string-tool",
+        "title": "Quick check: strip",
+        "explanation": "A quick check between lessons. Pick the best answer. You do not need to run code.",
+        "exampleCode": "print(\"Quick check\")",
+        "exampleNote": "No code to run here. Read the question and pick an answer.",
+        "exercise": "What does \"  hi  \".strip() return?",
+        "starterCode": "# Choose an answer on this screen.",
+        "hints": [
+          "Look at the spaces on the outside of the word.",
+          "strip does not change the letters themselves."
+        ],
+        "sourceMustContain": [],
+        "sourceMustContainOneOf": [],
+        "xp": 5,
+        "kind": "quiz",
+        "quizChoices": [
+          "hi",
+          "  hi  ",
+          "HI"
+        ],
+        "quizAnswer": 0,
+        "quizExplain": "strip removes spaces at the ends, so hi is left.",
+        "tests": []
+      },
+      {
+        "id": "fix-concat",
+        "title": "Fix the mix-up",
+        "explanation": "You cannot join text and a number with +. Turn the number into text first, or print them with a comma.",
+        "exampleCode": "print(\"Score\", 3)",
+        "exampleNote": "A comma in print is one way to mix text and a number.",
+        "exercise": "This program should print Score 4. The starter crashes. Fix it.",
+        "starterCode": "print(\"Score \" + 4)",
+        "hints": [
+          "The crash says you mixed text and a number.",
+          "A comma between the word and the number adds a space for you."
+        ],
+        "sourceMustContain": [],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "fix",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "Score 4",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "more-loops",
+    "title": "More loops",
+    "summary": "Count down, stop early, and nest loops.",
+    "symbol": "repeat",
+    "lessons": [
+      {
+        "id": "while-down",
+        "title": "Count down",
+        "explanation": "A while loop can count down. Subtract 1 each pass and stop when the number is no longer greater than 0.",
+        "exampleCode": "n = 3\nwhile n > 0:\n    print(n)\n    n = n - 1",
+        "exampleNote": "You see 3, then 2, then 1. Then n is 0 and the loop stops.",
+        "exercise": "Print 3, 2, and 1 on their own lines using a while loop.",
+        "starterCode": "n = 3\nprint(n)",
+        "hints": [
+          "Keep going while n > 0.",
+          "Inside the loop, print n and then subtract 1."
+        ],
+        "sourceMustContain": [
+          "while"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "3\n2\n1",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "while-break",
+        "title": "Stop with break",
+        "explanation": "break leaves a loop immediately. The lines after break in that pass do not run.",
+        "exampleCode": "n = 1\nwhile n < 10:\n    if n == 3:\n        break\n    print(n)\n    n = n + 1",
+        "exampleNote": "This prints 1 and 2, then stops when n reaches 3.",
+        "exercise": "Print 1 and 2 with a while loop, and break when n reaches 3 so 3 is not printed.",
+        "starterCode": "n = 1\nprint(n)",
+        "hints": [
+          "Check n == 3 before you print, then break.",
+          "Add 1 to n at the end of the loop so it can reach 3."
+        ],
+        "sourceMustContain": [
+          "while",
+          "break"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "1\n2",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "nested-stars",
+        "title": "Loops inside loops",
+        "explanation": "A loop can sit inside another loop. The inner loop finishes all of its passes before the outer loop takes one more step.",
+        "exampleCode": "for row in range(2):\n    line = \"\"\n    for col in range(3):\n        line = line + \"*\"\n    print(line)",
+        "exampleNote": "Two rows, and each row is three stars.",
+        "exercise": "Print two lines. Each line should be ***. Use a loop inside a loop.",
+        "starterCode": "print(\"***\")",
+        "hints": [
+          "The outer loop should run twice. range(2) does that.",
+          "The inner loop should add * three times, then you print the line."
+        ],
+        "sourceMustContain": [
+          "for"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "***\n***",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "nested-pairs",
+        "title": "Every pair",
+        "explanation": "Nested loops are how you visit every combination. Each item from the first list can meet each item from the second.",
+        "exampleCode": "for a in [\"A\"]:\n    for b in [1, 2]:\n        print(a, b)",
+        "exampleNote": "You get A 1 and then A 2.",
+        "exercise": "Print X 1 and X 2 using nested for loops. The letter is X and the numbers are 1 then 2.",
+        "starterCode": "print(1)",
+        "hints": [
+          "Outer loop over a one-item list that holds X.",
+          "Inner loop over [1, 2], and print the letter and the number."
+        ],
+        "sourceMustContain": [
+          "for"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "X 1\nX 2",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "q-range",
+        "title": "Quick check: range",
+        "explanation": "Quick check. No code to write.",
+        "exampleCode": "print(\"Quick check\")",
+        "exampleNote": "No code to run here. Read the question and pick an answer.",
+        "exercise": "Which numbers does range(3) give you?",
+        "starterCode": "# Choose an answer on this screen.",
+        "hints": [
+          "range stops before the number you pass.",
+          "The first number it gives is 0, not 1."
+        ],
+        "sourceMustContain": [],
+        "sourceMustContainOneOf": [],
+        "xp": 5,
+        "kind": "quiz",
+        "quizChoices": [
+          "0, 1, 2",
+          "1, 2, 3",
+          "0, 1, 2, 3"
+        ],
+        "quizAnswer": 0,
+        "quizExplain": "range(3) starts at 0 and stops before 3.",
+        "tests": []
+      },
+      {
+        "id": "fix-off-by-one",
+        "title": "Fix the count",
+        "explanation": "A loop that stops too early is a classic off-by-one bug. Check the condition with a real number.",
+        "exampleCode": "n = 1\nwhile n <= 3:\n    print(n)\n    n = n + 1",
+        "exampleNote": "n <= 3 includes 3. n < 3 does not.",
+        "exercise": "The program should print 1, 2, and 3. The starter stops too soon. Fix the condition.",
+        "starterCode": "n = 1\nwhile n < 3:\n    print(n)\n    n = n + 1",
+        "hints": [
+          "Run it and see which number is missing.",
+          "Change < to <= so 3 is included."
+        ],
+        "sourceMustContain": [
+          "while"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "fix",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "1\n2\n3",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "collections",
+    "title": "Tuples, sets, comprehensions",
+    "summary": "Pack values, keep uniques, and build lists in one line.",
+    "symbol": "square.stack.3d.up",
+    "lessons": [
+      {
+        "id": "tuple-make",
+        "title": "Pack a tuple",
+        "explanation": "A tuple is an ordered pack of values. Parentheses group them. You cannot append to a tuple.",
+        "exampleCode": "point = (2, 5)\nprint(point)",
+        "exampleNote": "The output keeps the parentheses and the comma.",
+        "exercise": "Create point as the tuple (4, 7) and print it.",
+        "starterCode": "point = (0, 0)\nprint(point)",
+        "hints": [
+          "Put 4 and 7 inside parentheses, separated by a comma.",
+          "Print the variable point."
+        ],
+        "sourceMustContain": [],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "(4, 7)",
+            "stdoutContains": [],
+            "values": {
+              "point": "(4, 7)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "tuple-unpack",
+        "title": "Unpack a tuple",
+        "explanation": "You can split a tuple into variables in one line. The number of names must match the number of values.",
+        "exampleCode": "pair = (3, 8)\nx, y = pair\nprint(x)\nprint(y)",
+        "exampleNote": "x gets 3 and y gets 8.",
+        "exercise": "pair is (3, 8). Unpack it into x and y, then print x and y on separate lines.",
+        "starterCode": "pair = (3, 8)\nprint(pair)",
+        "hints": [
+          "x, y = pair puts the first value in x and the second in y.",
+          "Print x, then print y."
+        ],
+        "sourceMustContain": [],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "3\n8",
+            "stdoutContains": [],
+            "values": {
+              "x": "3",
+              "y": "8"
+            }
+          }
+        ]
+      },
+      {
+        "id": "set-unique",
+        "title": "Sets drop repeats",
+        "explanation": "A set keeps each value once. Wrapping values in curly braces builds a set. Sorting makes the print order steady.",
+        "exampleCode": "nums = {3, 1, 3, 1}\nprint(sorted(nums))",
+        "exampleNote": "The repeats disappear, and sorted shows [1, 3].",
+        "exercise": "Make a set named nums that contains 4, 2, 4, and 2. Print the sorted set.",
+        "starterCode": "nums = [4, 2, 4, 2]\nprint(nums)",
+        "hints": [
+          "Use curly braces, not square brackets, so repeats are removed.",
+          "print(sorted(nums)) keeps the order predictable."
+        ],
+        "sourceMustContain": [
+          "sorted"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "[2, 4]",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "set-add",
+        "title": "Add to a set",
+        "explanation": ".add() puts one item into a set. If it is already there, the set stays the same.",
+        "exampleCode": "colors = {\"red\"}\ncolors.add(\"blue\")\nprint(sorted(colors))",
+        "exampleNote": "sorted shows both colors in alphabetical order.",
+        "exercise": "Start colors as {\"red\"}. Add blue, then print the sorted set.",
+        "starterCode": "colors = {\"red\"}\nprint(sorted(colors))",
+        "hints": [
+          "colors.add(\"blue\") puts the new color in.",
+          "Print sorted(colors) after you add."
+        ],
+        "sourceMustContain": [
+          "add"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "['blue', 'red']",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "comp-squares",
+        "title": "List comprehension",
+        "explanation": "A comprehension builds a list in one line: [expression for name in sequence].",
+        "exampleCode": "squares = [n * n for n in range(3)]\nprint(squares)",
+        "exampleNote": "range(3) is 0, 1, 2, so the squares are 0, 1, and 4.",
+        "exercise": "Build squares with a comprehension of n * n for n in range(4), and print it.",
+        "starterCode": "squares = []\nprint(squares)",
+        "hints": [
+          "The shape is [n * n for n in range(4)].",
+          "range(4) is 0, 1, 2, 3. Their squares are 0, 1, 4, 9."
+        ],
+        "sourceMustContain": [
+          "for"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "[0, 1, 4, 9]",
+            "stdoutContains": [],
+            "values": {
+              "squares": "[0, 1, 4, 9]"
+            }
+          }
+        ]
+      },
+      {
+        "id": "comp-filter",
+        "title": "Comprehension with if",
+        "explanation": "You can filter inside a comprehension. Add if at the end so only some items are kept.",
+        "exampleCode": "evens = [n for n in range(6) if n % 2 == 0]\nprint(evens)",
+        "exampleNote": "Only the even numbers from 0 up to but not including 6 are kept.",
+        "exercise": "Build evens as the even numbers in range(6) using a comprehension, and print the list.",
+        "starterCode": "evens = []\nprint(evens)",
+        "hints": [
+          "n % 2 == 0 is true for even numbers.",
+          "Put the if at the end of the comprehension."
+        ],
+        "sourceMustContain": [
+          "for",
+          "if"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "[0, 2, 4]",
+            "stdoutContains": [],
+            "values": {
+              "evens": "[0, 2, 4]"
+            }
+          }
+        ]
+      },
+      {
+        "id": "q-index",
+        "title": "Quick check: first index",
+        "explanation": "Quick check before the next project.",
+        "exampleCode": "print(\"Quick check\")",
+        "exampleNote": "No code to run here. Read the question and pick an answer.",
+        "exercise": "What is the index of the first item in a list?",
+        "starterCode": "# Choose an answer on this screen.",
+        "hints": [
+          "Python does not start counting list items at 1.",
+          "The last item can be -1, but the first is not."
+        ],
+        "sourceMustContain": [],
+        "sourceMustContainOneOf": [],
+        "xp": 5,
+        "kind": "quiz",
+        "quizChoices": [
+          "0",
+          "1",
+          "-1 only"
+        ],
+        "quizAnswer": 0,
+        "quizExplain": "Indexes start at 0. The first item is list[0].",
+        "tests": []
+      },
+      {
+        "id": "fix-index",
+        "title": "Fix the first item",
+        "explanation": "The starter prints the second color because index 1 is not the first item.",
+        "exampleCode": "colors = [\"gold\", \"blue\"]\nprint(colors[0])",
+        "exampleNote": "Index 0 is gold.",
+        "exercise": "colors is [\"gold\", \"blue\"]. The program should print gold, the first color. Fix the index.",
+        "starterCode": "colors = [\"gold\", \"blue\"]\nprint(colors[1])",
+        "hints": [
+          "Which color is coming out now?",
+          "Change 1 to 0."
+        ],
+        "sourceMustContain": [
+          "["
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "fix",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "gold",
+            "stdoutContains": [],
+            "values": {
+              "colors": "['gold', 'blue']"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "errors",
+    "title": "Errors",
+    "summary": "Catch problems instead of crashing.",
+    "symbol": "exclamationmark.triangle",
+    "lessons": [
+      {
+        "id": "try-int",
+        "title": "try and except",
+        "explanation": "try runs code that might fail. except runs only if that kind of error happens. The program can keep going.",
+        "exampleCode": "text = \"nope\"\ntry:\n    number = int(text)\nexcept ValueError:\n    number = 0\nprint(number)",
+        "exampleNote": "int(\"nope\") fails, so number becomes 0 instead of crashing.",
+        "exercise": "text is \"nope\". Try int(text). If that raises ValueError, set number to 0. Print number.",
+        "starterCode": "text = \"nope\"\nnumber = int(text)\nprint(number)",
+        "hints": [
+          "Wrap the int call in try, and name the error ValueError.",
+          "In the except block, set number = 0, then print number after the try/except."
+        ],
+        "sourceMustContain": [
+          "try",
+          "except"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "0",
+            "stdoutContains": [],
+            "values": {
+              "number": "0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "try-ok",
+        "title": "When nothing goes wrong",
+        "explanation": "If the try block finishes, except is skipped. The same function shape also survives a bad word.",
+        "exampleCode": "text = input(\"Text: \")\ntry:\n    number = int(text)\nexcept ValueError:\n    number = 0\nprint(number)",
+        "exampleNote": "12 is a valid number, so you see 12. A word would print 0 instead of crashing.",
+        "exercise": "Ask Text: .\nUse try/except ValueError around int(text).\nPrint the number, or 0 if the text is not a number.\nWe will answer 12 and then hi.",
+        "starterCode": "text = input(\"Text: \")\nprint(text)",
+        "hints": [
+          "The same try/except handles both a good number and a bad word.",
+          "On ValueError, store 0. Otherwise keep the int."
+        ],
+        "sourceMustContain": [
+          "try",
+          "except",
+          "input"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [
+              "12"
+            ],
+            "appendCode": null,
+            "stdoutEquals": "Text: 12\n12",
+            "stdoutContains": [],
+            "values": {
+              "number": "12"
+            }
+          },
+          {
+            "stdin": [
+              "hi"
+            ],
+            "appendCode": null,
+            "stdoutEquals": "Text: hi\n0",
+            "stdoutContains": [],
+            "values": {
+              "number": "0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "try-two",
+        "title": "A safe converter",
+        "explanation": "Put the try/except in a function and you can reuse it. Return the number, or 0 when the text is not a number.",
+        "exampleCode": "def safe_int(text):\n    try:\n        return int(text)\n    except ValueError:\n        return 0\n\nprint(safe_int(\"4\"))\nprint(safe_int(\"no\"))",
+        "exampleNote": "The first call returns 4. The second returns 0.",
+        "exercise": "Define safe_int(text). We will print safe_int(\"8\") and safe_int(\"no\"). Do not print inside the function.",
+        "starterCode": "def safe_int(text):\n    return text",
+        "hints": [
+          "return int(text) inside try.",
+          "except ValueError should return 0."
+        ],
+        "sourceMustContain": [
+          "try",
+          "except",
+          "return"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": "print(safe_int(\"8\"))\nprint(safe_int(\"no\"))",
+            "stdoutEquals": "8\n0",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "q-except",
+        "title": "Quick check: except",
+        "explanation": "Quick check about errors.",
+        "exampleCode": "print(\"Quick check\")",
+        "exampleNote": "No code to run here. Read the question and pick an answer.",
+        "exercise": "What is except for?",
+        "starterCode": "# Choose an answer on this screen.",
+        "hints": [
+          "try is the part that might fail.",
+          "except does not run when nothing goes wrong."
+        ],
+        "sourceMustContain": [],
+        "sourceMustContainOneOf": [],
+        "xp": 5,
+        "kind": "quiz",
+        "quizChoices": [
+          "It runs when a matching error happens",
+          "It always runs first",
+          "It deletes variables"
+        ],
+        "quizAnswer": 0,
+        "quizExplain": "except is the backup plan for a specific error inside try.",
+        "tests": []
+      },
+      {
+        "id": "fix-equal",
+        "title": "Fix the comparison",
+        "explanation": "One equals sign stores a value. Two equals signs ask if two values are the same. if needs the question.",
+        "exampleCode": "n = 3\nif n == 3:\n    print(\"Yes\")",
+        "exampleNote": "The condition is a comparison, so the if line is legal.",
+        "exercise": "n is 3. The program should print Yes. The starter uses the wrong equals sign and will not run. Fix it.",
+        "starterCode": "n = 3\nif n = 3:\n    print(\"Yes\")",
+        "hints": [
+          "The error is on the if line.",
+          "Comparisons use ==."
+        ],
+        "sourceMustContain": [
+          "=="
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "fix",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "Yes",
+            "stdoutContains": [],
+            "values": {
+              "n": "3"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "classes",
+    "title": "Classes",
+    "summary": "Bundle data and actions into your own types.",
+    "symbol": "cube",
+    "lessons": [
+      {
+        "id": "class-init",
+        "title": "A first class",
+        "explanation": "class starts a new type. __init__ runs when you build an instance. self is the new object.",
+        "exampleCode": "class Pet:\n    def __init__(self, name):\n        self.name = name\n\npet = Pet(\"Luna\")\nprint(pet.name)",
+        "exampleNote": "Pet(\"Luna\") stores Luna on the object. pet.name reads it back.",
+        "exercise": "Define Pet so Pet(\"Luna\") has a name attribute. Print pet.name.",
+        "starterCode": "pet_name = \"Luna\"\nprint(pet_name)",
+        "hints": [
+          "class Pet, then def __init__(self, name), then self.name = name.",
+          "Create pet = Pet(\"Luna\") and print pet.name."
+        ],
+        "sourceMustContain": [
+          "class",
+          "__init__"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "Luna",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "class-method",
+        "title": "A method",
+        "explanation": "A method is a function inside a class. It always takes self first, then any other parameters.",
+        "exampleCode": "class Greeter:\n    def hello(self, name):\n        return \"Hi \" + name\n\ng = Greeter()\nprint(g.hello(\"Sam\"))",
+        "exampleNote": "You call it on the object with a dot.",
+        "exercise": "Define Greeter with hello(self, name) that returns Hi plus a space plus the name. We will print Greeter().hello(\"Sam\"). Do not print inside the method.",
+        "starterCode": "class Greeter:\n    def hello(self, name):\n        return name",
+        "hints": [
+          "Return the text Hi, a space, and the name.",
+          "self comes first even if you do not use it yet."
+        ],
+        "sourceMustContain": [
+          "class",
+          "def",
+          "return"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": "print(Greeter().hello(\"Sam\"))",
+            "stdoutEquals": "Hi Sam",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "class-two",
+        "title": "Two objects",
+        "explanation": "Each call to the class builds a separate object. Changing one does not change the other.",
+        "exampleCode": "class Counter:\n    def __init__(self):\n        self.value = 0\n\na = Counter()\nb = Counter()\na.value = 2\nprint(a.value)\nprint(b.value)",
+        "exampleNote": "a.value is 2. b.value is still 0.",
+        "exercise": "Make two Counter objects, a and b. Set a.value to 2. Print a.value then b.value.",
+        "starterCode": "class Counter:\n    def __init__(self):\n        self.value = 0\n\na = Counter()\nprint(a.value)",
+        "hints": [
+          "b = Counter() makes a second object.",
+          "Only change a.value. Print both values."
+        ],
+        "sourceMustContain": [
+          "class"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "2\n0",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "class-speak",
+        "title": "Method uses self",
+        "explanation": "Inside a method, self.attribute reads data stored on that object.",
+        "exampleCode": "class Pet:\n    def __init__(self, name):\n        self.name = name\n\n    def label(self):\n        return self.name + \" the pet\"\n\nprint(Pet(\"Milo\").label())",
+        "exampleNote": "label uses the name saved in __init__.",
+        "exercise": "Pet(\"Milo\").label() should return Milo the pet. Define the class. We will print that call. Do not print inside the class.",
+        "starterCode": "class Pet:\n    def __init__(self, name):\n        self.name = name\n\n    def label(self):\n        return self.name",
+        "hints": [
+          "label should return self.name plus the text \" the pet\".",
+          "There is a space before the."
+        ],
+        "sourceMustContain": [
+          "class",
+          "return"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": "print(Pet(\"Milo\").label())",
+            "stdoutEquals": "Milo the pet",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "q-class",
+        "title": "Quick check: self",
+        "explanation": "Quick check about classes.",
+        "exampleCode": "print(\"Quick check\")",
+        "exampleNote": "No code to run here. Read the question and pick an answer.",
+        "exercise": "What is self inside a method?",
+        "starterCode": "# Choose an answer on this screen.",
+        "hints": [
+          "You call methods with object.method().",
+          "self is not the word class."
+        ],
+        "sourceMustContain": [],
+        "sourceMustContainOneOf": [],
+        "xp": 5,
+        "kind": "quiz",
+        "quizChoices": [
+          "The object the method was called on",
+          "The name of the class as text",
+          "The return value"
+        ],
+        "quizAnswer": 0,
+        "quizExplain": "self is the particular object, so self.name reads that object's data.",
+        "tests": []
+      },
+      {
+        "id": "fix-return",
+        "title": "Fix the return",
+        "explanation": "print shows a value and does not give it back. return gives it back to the caller.",
+        "exampleCode": "def double(n):\n    return n * 2",
+        "exampleNote": "The caller can print whatever comes back.",
+        "exercise": "double(4) should hand back 8. The starter prints instead of returning, so the check sees None. Fix the function. Do not print inside it. We will print double(4).",
+        "starterCode": "def double(n):\n    print(n * 2)",
+        "hints": [
+          "The checker prints the value that double returns.",
+          "Use return instead of print."
+        ],
+        "sourceMustContain": [
+          "return"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "fix",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": "print(double(4))",
+            "stdoutEquals": "8",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "games",
+    "title": "Text games",
+    "summary": "Small games made of input, choices, and loops.",
+    "symbol": "gamecontroller",
+    "lessons": [
+      {
+        "id": "game-guess",
+        "title": "Number guessing",
+        "explanation": "Pick a secret number and compare the guess. Tell the player if they should go higher, lower, or if they got it.",
+        "exampleCode": "secret = 7\nguess = int(input(\"Guess: \"))\nif guess == secret:\n    print(\"Correct\")\nelif guess < secret:\n    print(\"Higher\")\nelse:\n    print(\"Lower\")",
+        "exampleNote": "One guess is enough for this lesson. We will try three different answers.",
+        "exercise": "The secret number is 7.\nAsk Guess: and turn the answer into an int.\nPrint Correct, Higher, or Lower.\nWe will guess 7, then 3, then 9.",
+        "starterCode": "secret = 7\nguess = input(\"Guess: \")\nprint(guess)",
+        "hints": [
+          "int() makes the guess a number you can compare with 7.",
+          "If the guess is smaller, the player needs a Higher hint."
+        ],
+        "sourceMustContain": [
+          "input",
+          "int",
+          "if"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 15,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [
+              "7"
+            ],
+            "appendCode": null,
+            "stdoutEquals": "Guess: 7\nCorrect",
+            "stdoutContains": [],
+            "values": {}
+          },
+          {
+            "stdin": [
+              "3"
+            ],
+            "appendCode": null,
+            "stdoutEquals": "Guess: 3\nHigher",
+            "stdoutContains": [],
+            "values": {}
+          },
+          {
+            "stdin": [
+              "9"
+            ],
+            "appendCode": null,
+            "stdoutEquals": "Guess: 9\nLower",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "game-rps",
+        "title": "Rock, paper, scissors",
+        "explanation": "Compare two words. Paper covers rock, rock breaks scissors, scissors cut paper. The same word is a tie.",
+        "exampleCode": "you = input(\"You: \")\nopp = \"rock\"\nif you == opp:\n    print(\"Tie\")\nelif you == \"paper\":\n    print(\"You win\")\nelse:\n    print(\"You lose\")",
+        "exampleNote": "The opponent is always rock in this version, so you can learn the comparisons.",
+        "exercise": "Ask You: .\nThe opponent always plays rock.\nIf the player also says rock, print Tie.\nIf they say paper, print You win.\nOtherwise print You lose.\nWe will try rock, paper, and scissors.",
+        "starterCode": "you = input(\"You: \")\nprint(you)",
+        "hints": [
+          "Check the tie first, when you == \"rock\".",
+          "paper beats rock. Every other word loses in this simple version."
+        ],
+        "sourceMustContain": [
+          "input",
+          "if"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 15,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [
+              "rock"
+            ],
+            "appendCode": null,
+            "stdoutEquals": "You: rock\nTie",
+            "stdoutContains": [],
+            "values": {}
+          },
+          {
+            "stdin": [
+              "paper"
+            ],
+            "appendCode": null,
+            "stdoutEquals": "You: paper\nYou win",
+            "stdoutContains": [],
+            "values": {}
+          },
+          {
+            "stdin": [
+              "scissors"
+            ],
+            "appendCode": null,
+            "stdoutEquals": "You: scissors\nYou lose",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "game-hangman",
+        "title": "One hangman guess",
+        "explanation": "in checks whether a letter appears in a word. That is enough for a one-guess hangman.",
+        "exampleCode": "word = \"cat\"\nletter = input(\"Guess: \")\nif letter in word:\n    print(\"Yes\")\nelse:\n    print(\"No\")",
+        "exampleNote": "a is in cat. z is not.",
+        "exercise": "The secret word is cat.\nAsk Guess: for one letter.\nIf the letter is in the word, print Yes. Otherwise print No.\nWe will guess a and then z.",
+        "starterCode": "word = \"cat\"\nletter = input(\"Guess: \")\nprint(letter)",
+        "hints": [
+          "Use in, like letter in word.",
+          "Yes and No need capital letters."
+        ],
+        "sourceMustContain": [
+          "input",
+          "in",
+          "if"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 15,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [
+              "a"
+            ],
+            "appendCode": null,
+            "stdoutEquals": "Guess: a\nYes",
+            "stdoutContains": [],
+            "values": {}
+          },
+          {
+            "stdin": [
+              "z"
+            ],
+            "appendCode": null,
+            "stdoutEquals": "Guess: z\nNo",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "game-quiz",
+        "title": "Score a quiz",
+        "explanation": "Start a score at 0. Each correct answer adds 1. At the end, print the score.",
+        "exampleCode": "score = 0\none = input(\"2+2: \")\nif one == \"4\":\n    score = score + 1\ntwo = input(\"3+1: \")\nif two == \"4\":\n    score = score + 1\nprint(score)",
+        "exampleNote": "Both answers are text, because input always returns text. \"4\" matches.",
+        "exercise": "Ask 2+2: and then 3+1: .\nAdd 1 to score for each answer that is exactly 4.\nPrint the score.\nWe will answer 4 and 4, then 4 and 0.",
+        "starterCode": "score = 0\nprint(score)",
+        "hints": [
+          "Compare with the text \"4\", or convert with int. Either can work if the tests pass.",
+          "There are two separate if checks, one after each question."
+        ],
+        "sourceMustContain": [
+          "input",
+          "if"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 15,
+        "kind": "code",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [
+              "4",
+              "4"
+            ],
+            "appendCode": null,
+            "stdoutEquals": "2+2: 4\n3+1: 4\n2",
+            "stdoutContains": [],
+            "values": {
+              "score": "2"
+            }
+          },
+          {
+            "stdin": [
+              "4",
+              "0"
+            ],
+            "appendCode": null,
+            "stdoutEquals": "2+2: 4\n3+1: 0\n1",
+            "stdoutContains": [],
+            "values": {
+              "score": "1"
+            }
+          }
+        ]
+      },
+      {
+        "id": "q-bool",
+        "title": "Quick check: comparisons",
+        "explanation": "One last quick check before you replay anything you liked.",
+        "exampleCode": "print(\"Quick check\")",
+        "exampleNote": "No code to run here. Read the question and pick an answer.",
+        "exercise": "What is the value of 5 > 9?",
+        "starterCode": "# Choose an answer on this screen.",
+        "hints": [
+          "Read it as a yes-or-no question.",
+          "True would mean 5 really is greater than 9."
+        ],
+        "sourceMustContain": [],
+        "sourceMustContainOneOf": [],
+        "xp": 5,
+        "kind": "quiz",
+        "quizChoices": [
+          "False",
+          "True",
+          "None"
+        ],
+        "quizAnswer": 0,
+        "quizExplain": "5 is not greater than 9, so the comparison is False.",
+        "tests": []
+      },
+      {
+        "id": "fix-name",
+        "title": "Fix the spelling",
+        "explanation": "Python only knows print if every letter is right. A close spelling is still a different name.",
+        "exampleCode": "print(\"Hi\")",
+        "exampleNote": "The command is print, all lowercase.",
+        "exercise": "The program should print Hi. The starter misspells the command. Fix the name.",
+        "starterCode": "prnt(\"Hi\")",
+        "hints": [
+          "Read the error. It names the word Python does not know.",
+          "The command has five letters: p, r, i, n, t."
+        ],
+        "sourceMustContain": [
+          "print"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "fix",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "Hi",
+            "stdoutContains": [],
+            "values": {}
+          }
+        ]
+      },
+      {
+        "id": "fix-indent",
+        "title": "Fix the indent",
+        "explanation": "The line inside if has to be indented, usually by four spaces. Otherwise Python cannot tell what belongs to the if.",
+        "exampleCode": "ready = True\nif ready:\n    print(\"Go\")",
+        "exampleNote": "Go is indented, so it belongs to the if.",
+        "exercise": "ready is True. The program should print Go. The starter forgets to indent the print. Fix the spacing.",
+        "starterCode": "ready = True\nif ready:\nprint(\"Go\")",
+        "hints": [
+          "The error talks about indentation.",
+          "Put four spaces before print."
+        ],
+        "sourceMustContain": [
+          "if"
+        ],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "fix",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "Go",
+            "stdoutContains": [],
+            "values": {
+              "ready": "True"
+            }
+          }
+        ]
+      },
+      {
+        "id": "fix-quote",
+        "title": "Fix the quote",
+        "explanation": "A string starts with a quote and needs the same kind of quote at the end. If it is missing, Python cannot read the line.",
+        "exampleCode": "print(\"Hello\")",
+        "exampleNote": "Both quotes are there, so this line is valid.",
+        "exercise": "The program should print Hello. The starter is missing the closing quote. Fix the line.",
+        "starterCode": "print(\"Hello)",
+        "hints": [
+          "The error is a SyntaxError about the string.",
+          "Add a double quote before the closing parenthesis."
+        ],
+        "sourceMustContain": [],
+        "sourceMustContainOneOf": [],
+        "xp": 10,
+        "kind": "fix",
+        "quizChoices": [],
+        "quizAnswer": -1,
+        "quizExplain": "",
+        "tests": [
+          {
+            "stdin": [],
+            "appendCode": null,
+            "stdoutEquals": "Hello",
             "stdoutContains": [],
             "values": {}
           }

@@ -11,6 +11,8 @@ struct MainShell: View {
             TabView {
                 HomeView()
                     .tabItem { Label("Learn", systemImage: "book.fill") }
+                PlaygroundView()
+                    .tabItem { Label("Play", systemImage: "terminal.fill") }
                 ProgressScreen()
                     .tabItem { Label("Progress", systemImage: "chart.bar.fill") }
                 SettingsView()

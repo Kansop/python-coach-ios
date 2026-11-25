@@ -100,6 +100,11 @@ struct HighlightedCode: View {
 }
 
 struct CodeEditor: UIViewRepresentable {
+    static func scaledFont(for textView: UITextView, weight: UIFont.Weight) -> UIFont {
+        let base = UIFont.monospacedSystemFont(ofSize: 16, weight: weight)
+        return UIFontMetrics(forTextStyle: .body).scaledFont(for: base, compatibleWith: textView.traitCollection)
+    }
+
     @Binding var text: String
     var palette: EditorPalette
 
@@ -112,7 +117,8 @@ struct CodeEditor: UIViewRepresentable {
         textView.delegate = context.coordinator
         textView.backgroundColor = palette.background
         textView.tintColor = palette.cursor
-        textView.font = UIFont.monospacedSystemFont(ofSize: 16, weight: .regular)
+        textView.adjustsFontForContentSizeCategory = true
+        textView.font = Self.scaledFont(for: textView, weight: .regular)
         textView.textColor = palette.plain
         textView.autocorrectionType = .no
         textView.autocapitalizationType = .none
@@ -142,7 +148,9 @@ struct CodeEditor: UIViewRepresentable {
         textView.keyboardAppearance = palette.isDark ? .dark : .light
         textView.overrideUserInterfaceStyle = palette.isDark ? .dark : .light
         textView.inputAccessoryView?.overrideUserInterfaceStyle = palette.isDark ? .dark : .light
-        if textView.text != text || paletteChanged {
+        let category = textView.traitCollection.preferredContentSizeCategory
+        if textView.text != text || paletteChanged || context.coordinator.sizeCategory != category {
+            context.coordinator.sizeCategory = category
             let selection = textView.selectedRange
             context.coordinator.apply(text, to: textView, restore: selection)
         }
@@ -151,6 +159,7 @@ struct CodeEditor: UIViewRepresentable {
     final class Coordinator: NSObject, UITextViewDelegate {
         var parentText: Binding<String>
         var palette: EditorPalette
+        var sizeCategory: UIContentSizeCategory?
         weak var textView: UITextView?
 
         init(text: Binding<String>, palette: EditorPalette) {
@@ -168,8 +177,8 @@ struct CodeEditor: UIViewRepresentable {
         func apply(_ text: String, to textView: UITextView, restore: NSRange?) {
             let attributed = NSMutableAttributedString(string: text)
             let full = NSRange(location: 0, length: (text as NSString).length)
-            let font = UIFont.monospacedSystemFont(ofSize: 16, weight: .regular)
-            let keywordFont = UIFont.monospacedSystemFont(ofSize: 16, weight: .semibold)
+        let font = CodeEditor.scaledFont(for: textView, weight: .regular)
+        let keywordFont = CodeEditor.scaledFont(for: textView, weight: .semibold)
             attributed.addAttribute(.font, value: font, range: full)
             attributed.addAttribute(.foregroundColor, value: palette.plain, range: full)
             for token in SyntaxHighlighter.tokens(in: text) {

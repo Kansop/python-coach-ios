@@ -86,25 +86,51 @@ struct SettingsView: View {
 struct WelcomeSheet: View {
     var onStart: () -> Void
     @Environment(\.dismiss) private var dismiss
+    @State private var page = 0
+
+    private let pages: [(String, String, String)] = [
+        ("graduationcap.fill", "Python runs on this iPhone", "Nothing is sent to a server. There is no account, no ads, and no tracking. After one download, lessons work offline."),
+        ("book.fill", "Read, run, then type", "Each lesson is short. You read the idea, run an example, then type the exercise yourself."),
+        ("lightbulb.fill", "Hints and a streak", "Hints open one at a time and never show the whole answer. A daily challenge keeps your streak going.")
+    ]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            Image(systemName: "graduationcap.fill")
-                .font(.system(size: 44))
-                .foregroundStyle(AppTheme.accent)
-            Text("Python runs on this iPhone")
-                .font(AppTheme.rounded(.largeTitle, weight: .bold))
-                .foregroundStyle(AppTheme.ink)
-            Text("You'll read a short idea, run an example, then type the code yourself. Nothing is sent to a server. There are no ads and no account.")
-                .font(AppTheme.rounded(.body))
-                .foregroundStyle(AppTheme.muted)
-            Spacer()
-            PrimaryButton(title: "Start learning", systemImage: "arrow.right") {
-                onStart()
-                dismiss()
+            TabView(selection: $page) {
+                ForEach(pages.indices, id: \.self) { index in
+                    VStack(alignment: .leading, spacing: 14) {
+                        Image(systemName: pages[index].0)
+                            .font(.system(size: 44))
+                            .foregroundStyle(AppTheme.accent)
+                            .accessibilityHidden(true)
+                        Text(pages[index].1)
+                            .font(AppTheme.rounded(.largeTitle, weight: .bold))
+                            .foregroundStyle(AppTheme.ink)
+                            .accessibilityAddTraits(.isHeader)
+                        Text(pages[index].2)
+                            .font(AppTheme.rounded(.body))
+                            .foregroundStyle(AppTheme.muted)
+                        Spacer()
+                    }
+                    .padding(.top, 12)
+                    .tag(index)
+                    .accessibilityElement(children: .combine)
+                }
             }
+            .tabViewStyle(.page(indexDisplayMode: .always))
+            .frame(maxHeight: .infinity)
+            PrimaryButton(title: page == pages.count - 1 ? "Start learning" : "Next", systemImage: "arrow.right") {
+                if page < pages.count - 1 {
+                    withAnimation { page += 1 }
+                } else {
+                    onStart()
+                    dismiss()
+                }
+            }
+            .accessibilityHint(page == pages.count - 1 ? "Closes the introduction" : "Shows the next introduction page")
         }
         .padding(24)
+        .frame(maxWidth: 640)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .background(AppTheme.paper)
         .presentationDetents([.medium, .large])

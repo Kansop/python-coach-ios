@@ -420,7 +420,7 @@ def app_settings(debug: bool) -> list[tuple[str, str]]:
         ("SWIFT_EMIT_LOC_STRINGS", "YES"),
         ("SWIFT_STRICT_CONCURRENCY", "minimal"),
         ("SWIFT_VERSION", "5.0"),
-        ("TARGETED_DEVICE_FAMILY", "1"),
+        ("TARGETED_DEVICE_FAMILY", "\"1,2\""),
         ("CONFIG_NAME", "Debug" if debug else "Release"),
     ]
     if debug:
@@ -443,7 +443,7 @@ def test_settings(debug: bool) -> list[tuple[str, str]]:
         ("SWIFT_EMIT_LOC_STRINGS", "NO"),
         ("SWIFT_STRICT_CONCURRENCY", "minimal"),
         ("SWIFT_VERSION", "5.0"),
-        ("TARGETED_DEVICE_FAMILY", "1"),
+        ("TARGETED_DEVICE_FAMILY", "\"1,2\""),
         ("TEST_HOST", '"$(BUILT_PRODUCTS_DIR)/PythonCoach.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PythonCoach"'),
         ("CONFIG_NAME", "Debug" if debug else "Release"),
     ]

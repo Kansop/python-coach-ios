@@ -34,6 +34,96 @@ struct LessonFlowView: View {
     }
 
     var body: some View {
+        Group {
+            if lesson.isQuiz {
+                quizBody
+            } else {
+                codeBody
+            }
+        }
+        .background(AppTheme.paper)
+        .navigationTitle(lesson.title)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
+        .overlay {
+            if let celebration {
+                CelebrationView(
+                    result: celebration,
+                    nextTitle: nextTitle,
+                    onNext: goNext,
+                    onStay: { withAnimation(AppMotion.spring(reduceMotion)) { self.celebration = nil } }
+                )
+                .transition(.opacity.combined(with: .scale(scale: 0.96)))
+            }
+        }
+        .animation(AppMotion.spring(reduceMotion), value: celebration != nil)
+        .onAppear(perform: loadIfNeeded)
+        .onChange(of: currentID) { _, _ in
+            step = 0
+            loadLessonState()
+        }
+        .task(id: code) {
+            guard didLoad, !lesson.isQuiz else { return }
+            let id = lesson.id
+            let starter = lesson.starterCode
+            let current = code
+            try? await Task.sleep(nanoseconds: 400_000_000)
+            store.saveCode(lessonID: id, code: current, starter: starter)
+        }
+        .onDisappear {
+            if didLoad, !lesson.isQuiz {
+                store.saveCode(lessonID: lesson.id, code: code, starter: lesson.starterCode)
+            }
+            if engine.inputRequest != nil {
+                engine.finishInput(nil)
+            }
+        }
+    }
+
+    private var quizBody: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Text(lesson.explanation)
+                    .font(AppTheme.rounded(.title3))
+                    .foregroundStyle(AppTheme.ink)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(lesson.exercise)
+                    .font(AppTheme.rounded(.headline, weight: .semibold))
+                    .foregroundStyle(AppTheme.ink)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityAddTraits(.isHeader)
+                ForEach(Array(lesson.quizChoices.enumerated()), id: \.offset) { index, choice in
+                    Button {
+                        answerQuiz(index)
+                    } label: {
+                        HStack {
+                            Text(choice)
+                                .font(AppTheme.rounded(.body, weight: .semibold))
+                                .foregroundStyle(AppTheme.ink)
+                                .multilineTextAlignment(.leading)
+                            Spacer()
+                            Image(systemName: "circle")
+                                .foregroundStyle(AppTheme.muted)
+                        }
+                        .padding(14)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .coachCard()
+                    }
+                    .buttonStyle(PressScaleButtonStyle())
+                    .accessibilityLabel("Choice \(index + 1): \(choice)")
+                }
+                if let exerciseCheck, !exerciseCheck.passed {
+                    FeedbackCard(check: exerciseCheck)
+                    hintSection
+                }
+            }
+            .padding(20)
+            .frame(maxWidth: 760)
+            .frame(maxWidth: .infinity)
+        }
+    }
+
+    private var codeBody: some View {
         VStack(spacing: 0) {
             stepHeader
             ZStack {
@@ -48,10 +138,6 @@ struct LessonFlowView: View {
             .animation(AppMotion.spring(reduceMotion), value: step)
             bottomBar
         }
-        .background(AppTheme.paper)
-        .navigationTitle(lesson.title)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar(.hidden, for: .tabBar)
         .toolbar {
             if step == 2 {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -71,39 +157,6 @@ struct LessonFlowView: View {
                 store.saveCode(lessonID: lesson.id, code: lesson.starterCode, starter: lesson.starterCode)
             }
             Button("Cancel", role: .cancel) {}
-        }
-        .overlay {
-            if let celebration {
-                CelebrationView(
-                    result: celebration,
-                    nextTitle: nextTitle,
-                    onNext: goNext,
-                    onStay: { withAnimation(AppMotion.spring(reduceMotion)) { self.celebration = nil } }
-                )
-                .transition(.opacity.combined(with: .scale(scale: 0.96)))
-            }
-        }
-        .animation(AppMotion.spring(reduceMotion), value: celebration != nil)
-        .onAppear(perform: loadIfNeeded)
-        .onChange(of: currentID) { _, _ in
-            step = 0
-            loadLessonState()
-        }
-        .task(id: code) {
-            guard didLoad else { return }
-            let id = lesson.id
-            let starter = lesson.starterCode
-            let current = code
-            try? await Task.sleep(nanoseconds: 400_000_000)
-            store.saveCode(lessonID: id, code: current, starter: starter)
-        }
-        .onDisappear {
-            if didLoad {
-                store.saveCode(lessonID: lesson.id, code: code, starter: lesson.starterCode)
-            }
-            if engine.inputRequest != nil {
-                engine.finishInput(nil)
-            }
         }
     }
 
@@ -181,9 +234,14 @@ struct LessonFlowView: View {
     private var exerciseStep: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 14) {
-                Text("Your turn")
+                Text(lesson.isFix ? "Fix the bug" : "Your turn")
                     .font(AppTheme.rounded(.caption, weight: .bold))
-                    .foregroundStyle(AppTheme.accent)
+                    .foregroundStyle(lesson.isFix ? AppTheme.danger : AppTheme.accent)
+                if lesson.isFix {
+                    Label("The starter has a bug. Change it until the checks pass.", systemImage: "ladybug")
+                        .font(AppTheme.rounded(.subheadline))
+                        .foregroundStyle(AppTheme.ink)
+                }
                 Text(lesson.exercise)
                     .font(AppTheme.rounded(.body))
                     .foregroundStyle(AppTheme.ink)
@@ -308,6 +366,17 @@ struct LessonFlowView: View {
         exampleRun = nil
         exerciseCheck = nil
         celebration = nil
+    }
+
+    private func answerQuiz(_ choice: Int) {
+        let check = LessonChecker.gradeQuiz(lesson: lesson, choice: choice)
+        exerciseCheck = check
+        if check.passed {
+            let reward = store.recordPass(lesson: lesson)
+            withAnimation(AppMotion.spring(reduceMotion)) {
+                celebration = reward
+            }
+        }
     }
 
     private func runExample() {

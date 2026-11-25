@@ -83,6 +83,10 @@
 			isa = PBXBuildFile;
 			fileRef = 5B0E41932A7B0E1784FAB2C9;
 		};
+		6A3C339FE2FDBCE0B107D374 /* PBXBuildFile */ = {
+			isa = PBXBuildFile;
+			fileRef = 53449C8277D3D7FF1DA4C36C;
+		};
 		6CCA649AA7ECC4E987970B91 /* PBXBuildFile */ = {
 			isa = PBXBuildFile;
 			fileRef = 85B3A91E7694406777F6A300;
@@ -95,6 +99,10 @@
 			isa = PBXBuildFile;
 			fileRef = B81682A0702040DECAE96927;
 		};
+		7A3EB6DE7CD941C7DFAC1B0C /* PBXBuildFile */ = {
+			isa = PBXBuildFile;
+			fileRef = 6E1172CF8369647825713271;
+		};
 		7BDF7E4711894ED393B22256 /* PBXBuildFile */ = {
 			isa = PBXBuildFile;
 			fileRef = A0B6F58B6143C369302FF73A;
@@ -106,6 +114,10 @@
 		8002E9548E08A43279933693 /* PBXBuildFile */ = {
 			isa = PBXBuildFile;
 			fileRef = 4B1912D5AC8021BA67CBA826;
+		};
+		856DAA2C2D7E11A8C72E29D3 /* PBXBuildFile */ = {
+			isa = PBXBuildFile;
+			fileRef = E76AA3F354701A59192073D6;
 		};
 		88FED12C5AA6F6C80A810E44 /* PBXBuildFile */ = {
 			isa = PBXBuildFile;
@@ -170,6 +182,14 @@
 		DFEB165884A3C507BB20367D /* PBXBuildFile */ = {
 			isa = PBXBuildFile;
 			fileRef = 49D149F376E0809FF5A6CE9B;
+		};
+		EA0342BBB2B2309C6BCF4A28 /* PBXBuildFile */ = {
+			isa = PBXBuildFile;
+			fileRef = 60CC305FC60D35C35880AC29;
+		};
+		F2C07ABF08F2524890CADC33 /* PBXBuildFile */ = {
+			isa = PBXBuildFile;
+			fileRef = 5F6989A925E94AC842527B86;
 		};
 /* End PBXBuildFile section */
 
@@ -263,6 +283,12 @@
 			path = System/Library/Frameworks/SwiftData.framework;
 			sourceTree = SDKROOT;
 		};
+		53449C8277D3D7FF1DA4C36C /* PBXFileReference */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = DailyChallengeView.swift;
+			sourceTree = "<group>";
+		};
 		5AE49F9CF4339F102D5E1E36 /* PBXFileReference */ = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
@@ -289,12 +315,24 @@
 			path = BadgeLogic.swift;
 			sourceTree = "<group>";
 		};
+		5F6989A925E94AC842527B86 /* PBXFileReference */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = PlaygroundView.swift;
+			sourceTree = "<group>";
+		};
 		5F816EEF17061B9553F2E6B5 /* PBXFileReference */ = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = XCTest.framework;
 			path = System/Library/Frameworks/XCTest.framework;
 			sourceTree = SDKROOT;
+		};
+		60CC305FC60D35C35880AC29 /* PBXFileReference */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = DailyChallenge.swift;
+			sourceTree = "<group>";
 		};
 		61CD31AE4DBC7D2FAF922150 /* PBXFileReference */ = {
 			isa = PBXFileReference;
@@ -306,6 +344,12 @@
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
 			path = OutputNormalizer.swift;
+			sourceTree = "<group>";
+		};
+		6E1172CF8369647825713271 /* PBXFileReference */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = PlaygroundLibrary.swift;
 			sourceTree = "<group>";
 		};
 		72FE7D9FE7344F6A25DBB8D8 /* PBXFileReference */ = {
@@ -449,6 +493,12 @@
 			path = Info.plist;
 			sourceTree = "<group>";
 		};
+		E76AA3F354701A59192073D6 /* PBXFileReference */ = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.swift;
+			path = LessonMapView.swift;
+			sourceTree = "<group>";
+		};
 		FA945DC946D790D0AB09BCB1 /* PBXFileReference */ = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.swift;
@@ -502,10 +552,13 @@
 			children = (
 				61CD31AE4DBC7D2FAF922150,
 				1A756F2A4C8647934682DEDC,
+				53449C8277D3D7FF1DA4C36C,
 				85B3A91E7694406777F6A300,
 				443A3956EF0BDB603BAB6BB8,
 				BCF2FB886E6D27A04D752B7B,
+				E76AA3F354701A59192073D6,
 				8A08E5BC2A83750DB095FEB4,
+				5F6989A925E94AC842527B86,
 				B81682A0702040DECAE96927,
 				3A0B65296915036B3FF30F1F,
 				49D149F376E0809FF5A6CE9B
@@ -526,6 +579,7 @@
 			children = (
 				5D52074AB54B3274DC3DB8FF,
 				8C6D8EDC94F4FBB06DE76E38,
+				60CC305FC60D35C35880AC29,
 				D2900BE274ED33A86A0BF6B9,
 				ACE1B3A51BC2D0D826F859E4,
 				24BE0D29545A67A491B88D46,
@@ -598,6 +652,7 @@
 			isa = PBXGroup;
 			children = (
 				1B9A7D11447C6E2F56FEA4DF,
+				6E1172CF8369647825713271,
 				7B3D68E2CB0E85832B652346,
 				5AE49F9CF4339F102D5E1E36
 			);
@@ -728,6 +783,7 @@
 				DE574F8B4A840E605F2BB120,
 				C758DCB48CA33259FF24BF60,
 				5C4D539CC5CDF8FF2008225C,
+				EA0342BBB2B2309C6BCF4A28,
 				30D891F7E1DB066E639B8687,
 				6D219B43CC6823481151229D,
 				1A1646756C6AFECF193BD83D,
@@ -742,15 +798,19 @@
 				A309B50DBEA816A76C3BA039,
 				4951F07195FB9816F771142C,
 				B6A56341B914A064CFAB763E,
+				7A3EB6DE7CD941C7DFAC1B0C,
 				2F5D697E6813F001E58CB814,
 				A95E5708648C724CCAB0F05E,
 				BEE29C42A589C96FE6920D2A,
 				88FED12C5AA6F6C80A810E44,
 				CBF397CD3FE76919D705F8A4,
+				6A3C339FE2FDBCE0B107D374,
 				6CCA649AA7ECC4E987970B91,
 				B83B1B87E6F9AA7D10AA16B5,
 				532BD498B5CE217D62BDD52B,
+				856DAA2C2D7E11A8C72E29D3,
 				98D2D145E38E5A043E003EBA,
+				F2C07ABF08F2524890CADC33,
 				736C01D74262B46017881EB1,
 				C5A3660B97BD1AD629B748C2,
 				DFEB165884A3C507BB20367D
@@ -784,7 +844,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PythonCoach.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PythonCoach";
 			};
 			name = Debug;
@@ -808,7 +868,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -852,7 +912,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PythonCoach.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PythonCoach";
 			};
 			name = Release;
@@ -898,7 +958,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				ENABLE_TESTABILITY = YES;
 			};
 			name = Debug;

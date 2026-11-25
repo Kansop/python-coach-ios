@@ -20,7 +20,95 @@ struct Lesson: Codable, Hashable, Identifiable {
     var sourceMustContain: [String]
     var sourceMustContainOneOf: [String]
     var xp: Int
+    var kind: String
+    var quizChoices: [String]
+    var quizAnswer: Int
+    var quizExplain: String
     var tests: [LessonTest]
+
+    var isQuiz: Bool { kind == "quiz" }
+    var isFix: Bool { kind == "fix" }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, title, explanation, exampleCode, exampleNote, exercise, starterCode, hints
+        case sourceMustContain, sourceMustContainOneOf, xp, kind, quizChoices, quizAnswer, quizExplain, tests
+    }
+
+    init(
+        id: String,
+        title: String,
+        explanation: String,
+        exampleCode: String,
+        exampleNote: String,
+        exercise: String,
+        starterCode: String,
+        hints: [String],
+        sourceMustContain: [String],
+        sourceMustContainOneOf: [String],
+        xp: Int,
+        kind: String,
+        quizChoices: [String],
+        quizAnswer: Int,
+        quizExplain: String,
+        tests: [LessonTest]
+    ) {
+        self.id = id
+        self.title = title
+        self.explanation = explanation
+        self.exampleCode = exampleCode
+        self.exampleNote = exampleNote
+        self.exercise = exercise
+        self.starterCode = starterCode
+        self.hints = hints
+        self.sourceMustContain = sourceMustContain
+        self.sourceMustContainOneOf = sourceMustContainOneOf
+        self.xp = xp
+        self.kind = kind
+        self.quizChoices = quizChoices
+        self.quizAnswer = quizAnswer
+        self.quizExplain = quizExplain
+        self.tests = tests
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        title = try container.decode(String.self, forKey: .title)
+        explanation = try container.decode(String.self, forKey: .explanation)
+        exampleCode = try container.decode(String.self, forKey: .exampleCode)
+        exampleNote = try container.decode(String.self, forKey: .exampleNote)
+        exercise = try container.decode(String.self, forKey: .exercise)
+        starterCode = try container.decode(String.self, forKey: .starterCode)
+        hints = try container.decode([String].self, forKey: .hints)
+        sourceMustContain = try container.decode([String].self, forKey: .sourceMustContain)
+        sourceMustContainOneOf = try container.decode([String].self, forKey: .sourceMustContainOneOf)
+        xp = try container.decode(Int.self, forKey: .xp)
+        kind = try container.decodeIfPresent(String.self, forKey: .kind) ?? "code"
+        quizChoices = try container.decodeIfPresent([String].self, forKey: .quizChoices) ?? []
+        quizAnswer = try container.decodeIfPresent(Int.self, forKey: .quizAnswer) ?? -1
+        quizExplain = try container.decodeIfPresent(String.self, forKey: .quizExplain) ?? ""
+        tests = try container.decodeIfPresent([LessonTest].self, forKey: .tests) ?? []
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(title, forKey: .title)
+        try container.encode(explanation, forKey: .explanation)
+        try container.encode(exampleCode, forKey: .exampleCode)
+        try container.encode(exampleNote, forKey: .exampleNote)
+        try container.encode(exercise, forKey: .exercise)
+        try container.encode(starterCode, forKey: .starterCode)
+        try container.encode(hints, forKey: .hints)
+        try container.encode(sourceMustContain, forKey: .sourceMustContain)
+        try container.encode(sourceMustContainOneOf, forKey: .sourceMustContainOneOf)
+        try container.encode(xp, forKey: .xp)
+        try container.encode(kind, forKey: .kind)
+        try container.encode(quizChoices, forKey: .quizChoices)
+        try container.encode(quizAnswer, forKey: .quizAnswer)
+        try container.encode(quizExplain, forKey: .quizExplain)
+        try container.encode(tests, forKey: .tests)
+    }
 }
 
 struct LessonTest: Codable, Hashable {

@@ -24,9 +24,15 @@ struct CelebrationView: View {
                         .symbolEffect(.bounce, value: showMark)
                 }
                 .frame(height: 160)
-                Text("Nice work")
+                Text(result.leveledUp ? "Level up" : "Nice work")
                     .font(AppTheme.rounded(.largeTitle, weight: .bold))
                     .foregroundStyle(AppTheme.ink)
+                    .accessibilityAddTraits(.isHeader)
+                if result.leveledUp {
+                    Text("You reached level \(result.level)")
+                        .font(AppTheme.rounded(.title3, weight: .semibold))
+                        .foregroundStyle(AppTheme.accent)
+                }
                 VStack(spacing: 6) {
                     if result.xpGained > 0 {
                         Text("+\(result.xpGained) XP")

@@ -6,12 +6,12 @@ It is built for iOS 17 or newer, in SwiftUI.
 
 ## What you can do
 
-- Work through 44 lessons in 11 units: printing, variables, strings, math, input, choices, loops, lists, functions, dictionaries, and small projects.
+- Work through 80+ lessons: the core path, then string tools, more loops, tuples, sets, comprehensions, errors, classes, and text games (guessing, rock-paper-scissors, hangman, a quiz). Some steps are multiple-choice checks. Some are "fix the bug" edits.
 - Run real Python, including `input()`, and read friendly explanations when something goes wrong.
-- Keep a daily streak, earn XP, finish units, and collect badges. Progress stays on the phone.
+- Keep a daily streak, earn XP, finish units, and collect badges. A daily challenge and a free-play playground (with saved snippets) stay on the phone too.
 - Ask for hints one at a time. A hint never shows the full answer.
 - Type in a monospaced editor with basic syntax colors and a row of Python keys above the keyboard (`: ( ) [ ] " ' =` and Tab).
-- Use light mode, dark mode, or the system setting.
+- Use it on iPhone or iPad. Text follows Dynamic Type, and the main controls have VoiceOver labels. Light mode, dark mode, or the system setting.
 - Hear a short chime when an exercise passes. The chime follows the silent switch, and you can turn sound and a light haptic off in Settings.
 
 ## How Python runs offline
@@ -71,7 +71,7 @@ A free provisioning profile expires after about 7 days. Run the app from Xcode a
 
 The shared scheme includes the unit tests. In Xcode, choose Product → Test, or press Command-U.
 
-The tests cover lesson checking (output, values, required syntax, timeouts, and kid-facing errors), source scanning, syntax tokens, streak dates, levels, badges, Pyodide path mapping, cached-file checks, and SwiftData progress (XP is awarded once, streaks move forward, hints unlock one at a time).
+The tests cover lesson checking (output, values, required syntax, timeouts, quizzes, and kid-facing errors), source scanning, syntax tokens, streak dates, levels, badges, the daily challenge calendar, saved playground snippets, Pyodide path mapping, cached-file checks, and SwiftData progress (XP is awarded once, streaks move forward, hints unlock one at a time).
 
 ## Privacy
 
