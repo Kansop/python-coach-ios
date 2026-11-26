@@ -4,8 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#132c29" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
     <title>Python Trail · Learn Python</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=1.6.0" />
+    <style>
+      .booterror{max-width:32rem;margin:2rem auto;padding:1.25rem 1.5rem;background:#fffefa;border:1px solid #dbe0d5;border-radius:13px}
+      .booterror h2{margin:0 0 .6rem}
+      .booterror p{margin:0 0 1rem;color:#59695e}
+    </style>
   </head>
   <body>
     <aside>
@@ -20,10 +26,74 @@
       <header>
         <span id="crumb"></span><a class="group" href="#friends" id="friendlink"></a>
       </header>
-      <div id="app"></div>
+      <div id="app">
+        <div class="panel lesson booterror" id="booterror">
+          <h2>Python Trail could not start</h2>
+          <p id="bootmsg">The lessons did not load. Reset the app to clear saved data and reload a fresh copy.</p>
+          <button type="button" class="btn primary" id="resetapp">Reset app</button>
+        </div>
+      </div>
     </main>
-    <script src="course.js"></script>
-    <script src="online.js"></script>
-    <script src="app.js"></script>
+    <script>
+      (function () {
+        function resetApp() {
+          try {
+            var keys = [];
+            for (var i = 0; i < localStorage.length; i++) {
+              var k = localStorage.key(i);
+              if (k && k.indexOf("trail.") === 0) keys.push(k);
+            }
+            for (var j = 0; j < keys.length; j++) localStorage.removeItem(keys[j]);
+          } catch (e) {}
+          var next =
+            location.pathname +
+            (location.pathname.slice(-1) === "/" ? "" : "/") +
+            "?v=" +
+            Date.now() +
+            (location.hash || "");
+          if (typeof caches === "undefined" || !caches.keys) {
+            location.replace(next);
+            return;
+          }
+          caches
+            .keys()
+            .then(function (names) {
+              return Promise.all(
+                names.map(function (name) {
+                  return caches.open(name).then(function (cache) {
+                    return cache.keys().then(function (reqs) {
+                      return Promise.all(
+                        reqs.map(function (req) {
+                          return req.url.indexOf("python-trail") !== -1 ||
+                            req.url.indexOf("Python-Trail") !== -1
+                            ? cache.delete(req)
+                            : null;
+                        })
+                      );
+                    });
+                  });
+                })
+              );
+            })
+            .catch(function () {})
+            .then(function () {
+              location.replace(next);
+            });
+        }
+        window.trailReset = resetApp;
+        var btn = document.getElementById("resetapp");
+        if (btn) btn.onclick = resetApp;
+        window.addEventListener("error", function (ev) {
+          var msg = document.getElementById("bootmsg");
+          var started = document.querySelector("#app h1, #app .hero, #app .title");
+          if (msg && ev && ev.message && !started) {
+            msg.textContent = "Error: " + ev.message;
+          }
+        });
+      })();
+    </script>
+    <script src="course.js?v=1.6.0"></script>
+    <script src="online.js?v=1.6.0"></script>
+    <script src="app.js?v=1.6.0"></script>
   </body>
 </html>

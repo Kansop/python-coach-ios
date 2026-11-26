@@ -5,6 +5,8 @@ Learn Python from scratch with 16 interactive lessons, a playground and two proj
 [Open the live app](https://kansop.github.io/pocket-ai/python-trail/) or [download a standalone copy](https://github.com/Kansop/python-coach-ios/raw/refs/heads/python-trail/Python-Trail.html) and open the saved HTML file in a browser. Lessons and the editor also run offline. Each browser saves its own progress until you sign in.
 
 To develop locally, run `python -m http.server 8000` from this directory and open http://localhost:8000. The bundled Python runtime is Skulpt (see LICENSE.txt). Rebuild the standalone file with `python3 build-standalone.py`.
+If the live page is ever blank on a phone, tap **Reset app** if you see it, or close the Safari tab completely and open the link again.
+
 
 ## Study together online
 

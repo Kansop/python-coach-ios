@@ -1,3 +1,4 @@
+const TRAIL_VERSION = "1.6.0";
 const paths = {
   home: "M3 10l9-7 9 7v10h-6v-6H9v6H3z",
   route: "M5 4v10a4 4 0 004 4h8m-2-3 3 3-3 3M12 5h8m-8 4h6",
@@ -271,7 +272,7 @@ function wire(i) {
     b.disabled = true;
     s.hidden = false;
     try {
-      let w = new Worker(window.trailWorkerURL || "worker.js");
+      let w = new Worker(window.trailWorkerURL || "worker.js?v=" + TRAIL_VERSION);
       activeWorker = w;
       timer = setTimeout(() => {
         finish();
@@ -428,15 +429,51 @@ function render() {
         .join("") +
       "</div>";
   else if (r === "friends" || r === "chat") {
-    if (window.TrailOnline && TrailOnline.onRender(r, r === "chat" ? id : i)) {
+    let handled = false;
+    try {
+      handled = !!(
+        window.TrailOnline &&
+        TrailOnline.onRender(r, r === "chat" ? id : i)
+      );
+    } catch (err) {
+      handled = false;
+    }
+    if (handled) {
       window.scrollTo(0, 0);
       return;
     }
+    app.innerHTML =
+      title(
+        "Study with friends",
+        "Take turns writing code and explaining what it does.",
+      ) +
+      '<div class="panel lesson"><h3>Online study is unavailable</h3><p>You can keep learning offline on this device. Check your connection and try again to text a friend or see their lesson.</p><a class="btn primary" href="Python-Trail.html" download="Python-Trail.html" id="download">Download the app</a></div><div class="panel lesson"><h3>Pair challenge · Build a snack budget</h3><p>One person writes a list of snack prices and a budget. Their partner predicts how much money will be left. Run the code, then swap roles.</p><details><summary>Try these test cases</summary><p>A budget of 20 with prices [4, 3, 5] leaves 8. A budget of 10 with prices [5, 5] leaves 0. What happens if you go over budget?</p></details><p>' +
+      btn("#lab", "Open playground", "terminal") +
+      "</p></div>";
   } else app.innerHTML = home();
   if (window.trailWorkerURL && document.querySelector("#download"))
     document.querySelector("#download").href = location.href.split("#")[0];
-  if (window.TrailOnline) TrailOnline.onRender(r, i);
+  try {
+    if (window.TrailOnline) TrailOnline.onRender(r, i);
+  } catch (err) {}
   window.scrollTo(0, 0);
 }
-window.addEventListener("hashchange", render);
-render();
+function showRecovery(err) {
+  if (!app) return;
+  if (document.querySelector("#app h1, #app .hero, #app .lesson, #app .title")) return;
+  app.innerHTML =
+    '<div class="panel lesson" id="booterror"><h2>Python Trail could not start</h2><p id="bootmsg">' +
+    esc(err && err.message ? err.message : "The lessons did not load. Reset the app and try again.") +
+    '</p><button type="button" class="btn primary" id="resetapp">Reset app</button></div>';
+  const b = document.querySelector("#resetapp");
+  if (b && window.trailReset) b.onclick = window.trailReset;
+}
+function safeRender() {
+  try {
+    render();
+  } catch (err) {
+    showRecovery(err);
+  }
+}
+window.addEventListener("hashchange", safeRender);
+safeRender();
