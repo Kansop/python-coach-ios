@@ -2,3 +2,28 @@
 @media(max-width:980px){aside{width:175px}.brand{font-size:19px;padding:0;gap:7px}main{margin-left:175px}.columns{gap:14px;grid-template-columns:minmax(0,1.4fr) minmax(215px,1fr)}.hero{padding:28px}.unit{padding:14px;gap:10px}}
 @media(max-width:760px){aside{position:static;width:100%;padding:12px 16px 5px}.brand{font-size:19px}.logo{width:29px;line-height:29px;font-size:16px}.navlabel,.asidefoot{display:none}nav{display:flex;gap:3px;overflow:auto}nav a{white-space:nowrap;font-size:13px;padding:7px 9px;gap:5px}nav .ico{width:15px}main{margin:0}header{height:43px;font-size:13px}#app{padding-top:18px}.hero{min-height:245px;padding:22px}.hero:before{inset:0;background-position:70% center}.hero:after{background:linear-gradient(90deg,#102b34f5,#102b34c7 40%,#102b3420)}.columns,.resourcegrid{grid-template-columns:1fr}.hero p{max-width:225px}.columns{margin-top:22px}.sectionhead{margin-bottom:12px}.panel{padding:16px}.sectionhead h2{font-size:22px}.unit{padding:15px}.group .ico{width:16px}}
 [hidden]{display:none!important}.hero h1{max-width:470px}.lesson details pre{margin-bottom:14px}
+
+.authform{display:grid;gap:12px;margin-top:12px}
+.authform label{display:grid;gap:6px;font-weight:600;font-size:14px}
+.authform input,.chatform input{border:1px solid #d1d9ca;border-radius:8px;padding:9px 12px;background:#fffefa;color:#1c302b}
+.inlineform{grid-template-columns:1fr auto;align-items:center}
+.friendrow{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid #e6e9df}
+.friendrow:first-of-type{border-top:0}
+.friendmeta{min-width:0;flex:1}
+.friendmeta small{color:#59695e}
+.dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;background:#9aa894;box-shadow:0 0 0 3px #e8ece2}
+.dot.on{background:#3f8f3e;box-shadow:0 0 0 3px #dff0d3}
+.chatwrap{max-width:760px}
+.chatlog{display:flex;flex-direction:column;gap:10px;min-height:240px;max-height:50vh;overflow:auto;padding:12px;background:#eff3eb;border-radius:12px;margin:16px 0}
+.bubble{max-width:80%;padding:8px 12px;border-radius:12px;background:white;border:1px solid #dbe0d5}
+.bubble.mine{margin-left:auto;background:#c4ee9d;border-color:#c4ee9d}
+.bubblewho{font-size:12px;font-weight:700;color:#546459;margin-bottom:2px}
+.bubbletext{white-space:pre-wrap;overflow-wrap:anywhere}
+.chatform{display:flex;gap:8px}
+.chatform input{flex:1}
+.asidefoot{cursor:default}
+.chatwrap .title p{display:flex;align-items:center;gap:8px}
+@media (max-width:760px){
+  .inlineform{grid-template-columns:1fr}
+  .friendrow{flex-wrap:wrap}
+}
